@@ -48,15 +48,10 @@ class WelcomeScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        onPressed: () {},
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Bungee",
-                            fontSize: 24,
-                          ),
-                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        child: Text("Login"),
                       ),
                     ),
                   ),
@@ -72,15 +67,10 @@ class WelcomeScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        onPressed: () {},
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Bungee",
-                            fontSize: 24,
-                          ),
-                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
+                        child: Text("Sign Up"),
                       ),
                     ),
                   ),

@@ -9,11 +9,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
       title: 'ShoppingPal',
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-      ),
-      home: WelcomeScreen(),
+      theme: kCustomThemeData,
+      routes: kAppRoutes,
     );
   }
 }

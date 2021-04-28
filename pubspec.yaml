@@ -68,6 +68,9 @@ flutter:
     - family: Bungee
       fonts:
         - asset: assets/fonts/Bungee-Regular.otf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
   #     - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
