@@ -51,7 +51,10 @@ class WelcomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
                         },
-                        child: Text("Login"),
+                        child: Text(
+                          "Login",
+                          style: kMainTextStyle,
+                        ),
                       ),
                     ),
                   ),
@@ -70,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, '/signup');
                         },
-                        child: Text("Sign Up"),
+                        child: Text("Sign Up", style: kMainTextStyle),
                       ),
                     ),
                   ),

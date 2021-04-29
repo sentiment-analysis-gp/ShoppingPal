@@ -15,7 +15,11 @@ final kMainTextStyle = TextStyle(
   fontSize: 24,
   color: Colors.white,
 );
-
+final kSecondaryTextStyle = TextStyle(
+  fontFamily: "Lato",
+  fontSize: 18,
+  color: Colors.black,
+);
 final ThemeData kCustomThemeData = ThemeData(
   primaryColor: kPrimaryColor,
   accentColor: kSecondaryColor,

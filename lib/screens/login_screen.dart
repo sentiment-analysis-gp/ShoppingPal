@@ -92,7 +92,10 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       onPressed: () {},
-                      child: Text("Login"),
+                      child: Text(
+                        "Login",
+                        style: kMainTextStyle,
+                      ),
                     ),
                   ),
                 ),
@@ -101,7 +104,6 @@ class LoginScreen extends StatelessWidget {
           ],
         ),
       ),
-      drawer: Text("dasd"),
     );
   }
 }
