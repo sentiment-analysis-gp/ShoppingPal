@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "28434630912",
+    "project_id": "shoppingpal-deffe",
+    "storage_bucket": "shoppingpal-deffe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28434630912:android:5321345568b6a5a7954be5",
+        "android_client_info": {
+          "package_name": "com.asu.shopping_pal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28434630912-f5vm50or73u4bjae5ion6tsvvjhi3kom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA2Dg5783J1i21uaXpxuGOofT7BhCviAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28434630912-f5vm50or73u4bjae5ion6tsvvjhi3kom.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

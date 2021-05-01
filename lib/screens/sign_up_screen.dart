@@ -1,7 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_pal/models/user.dart' as model;
+import 'package:shopping_pal/services/authenticationService.dart';
 
 class SignUpScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String name;
+  String email;
+  String password;
+  String phoneNumber;
+  String confirmPassword;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,7 +55,9 @@ class SignUpScreen extends StatelessWidget {
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
+                    onChanged: (String entered) {
+                      name = entered;
+                    },
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.emoji_emotions_outlined,
@@ -64,12 +76,15 @@ class SignUpScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   width: size.width * 0.8,
                   child: TextField(
+                    keyboardType: TextInputType.phone,
+                    onChanged: (String entered) {
+                      phoneNumber = entered;
+                    },
                     style: TextStyle(
                       fontFamily: "Lato",
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.phone_outlined,
@@ -88,12 +103,15 @@ class SignUpScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   width: size.width * 0.8,
                   child: TextField(
+                    keyboardType: TextInputType.emailAddress,
                     style: TextStyle(
                       fontFamily: "Lato",
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
+                    onChanged: (String entered) {
+                      email = entered;
+                    },
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.email_outlined,
@@ -118,7 +136,9 @@ class SignUpScreen extends StatelessWidget {
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
+                    onChanged: (String entered) {
+                      password = entered;
+                    },
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.lock_outline,
@@ -139,7 +159,9 @@ class SignUpScreen extends StatelessWidget {
                   child: TextField(
                     obscureText: true,
                     style: kSecondaryTextStyle,
-                    onChanged: (value) {},
+                    onChanged: (String entered) {
+                      confirmPassword = entered;
+                    },
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.lock_outline,
@@ -165,7 +187,14 @@ class SignUpScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          AuthenticationService().signUpWithEmail(
+                              name, email, phoneNumber, password);
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
                       child: Text(
                         "Submit",
                         style: kMainTextStyle,

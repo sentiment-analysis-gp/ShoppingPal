@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/authenticationService.dart';
 
 class LoginScreen extends StatelessWidget {
+  String email;
+  String password;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,7 +48,9 @@ class LoginScreen extends StatelessWidget {
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      email = value;
+                    },
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.email,
@@ -68,7 +73,9 @@ class LoginScreen extends StatelessWidget {
                       fontSize: 18,
                       color: Colors.black,
                     ),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      password = value;
+                    },
                     decoration: InputDecoration(
                         icon: Icon(
                           Icons.lock,
@@ -91,7 +98,9 @@ class LoginScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        AuthenticationService().signIn(email, password);
+                      },
                       child: Text(
                         "Login",
                         style: kMainTextStyle,
