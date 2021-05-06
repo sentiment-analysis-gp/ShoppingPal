@@ -14,4 +14,22 @@ class Product {
       this.productAmazonRating,
       this.productImageURL,
       this.productModelRating});
+
+  Product.fromData(Map<String, dynamic> data)
+      : productName = data['productName'],
+        productPrice = data['productPrice'],
+        productModelRating = data['productModelRating'],
+        productAmazonRating = data['productAmazonRating'],
+        productImageURL = data['productImageURL'],
+        productURL = data['productURL'];
+
+
+  Map<String, dynamic> toJson() => {
+      'productName': productName,
+      'productPrice': productPrice,
+      'productModelRating': productModelRating,
+      'productAmazonRating': productAmazonRating,
+      'productImageURL': productImageURL,
+      'productURL': productURL,
+    };
 }
