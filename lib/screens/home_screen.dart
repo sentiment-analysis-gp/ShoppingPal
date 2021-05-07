@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/productcard.dart';
@@ -18,7 +19,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<Product> productsHistory = List<Product>();
 
-    List<Map<String, dynamic>> data = ModalRoute.of(context).settings.arguments;
+    List<Map<String, dynamic>> data = [
+      {
+        "productName": "productName",
+        "productPrice": r"9999$",
+        "productModelRating": "5/5",
+        "productAmazonRating": "2/5",
+        "productImageURL": "productImageURL",
+        "productURL": "productURL"
+      },
+      {
+        "productName": "productName",
+        "productPrice": r"9999$",
+        "productModelRating": "5/5",
+        "productAmazonRating": "5/5",
+        "productImageURL": "productImageURL",
+        "productURL": "productURL"
+      },
+      {
+        "productName": "productName",
+        "productPrice": r"9999$",
+        "productModelRating": "5/5",
+        "productAmazonRating": "3/5",
+        "productImageURL": "productImageURL",
+        "productURL": "productURL"
+      }
+    ];
     if (data != null) {
       data.forEach((element) {
         productsHistory.add(Product.fromData(element));
@@ -30,14 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: SearchAppBar(),
       drawer: CustomDrawer(),
+      //backgroundColor: Colors.purple[50],
       body: (data == null)
           ? Center(child: Text("Your History is empty"))
           : ListView.builder(
               itemCount: productsHistory.length,
               itemBuilder: (context, index) {
-                return ProductCard(product: productsHistory[index]);
+                return ProductCard(product: productsHistory[index], parentScreen: ParentScreen.history,);
               },
             ),
-    ); //ToDo: body design
+    );
   }
 }

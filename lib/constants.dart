@@ -10,7 +10,7 @@ const kPrimaryColor = Color(0xFF623797);
 const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
   //'/': (context) => WelcomeScreen(),
-  '/': (context) => SearchScreen(),//HomeScreen(),
+  '/': (context) => HomeScreen(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
@@ -32,3 +32,8 @@ final ThemeData kCustomThemeData = ThemeData(
     textTheme: ButtonTextTheme.primary,
   ),
 );
+
+enum ParentScreen {
+  wishList,
+  history
+}
