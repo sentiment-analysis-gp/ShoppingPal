@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
+import 'package:shopping_pal/screens/shared/list_products.dart';
 import 'package:shopping_pal/screens/shared/productcard.dart';
 import 'package:http/http.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
@@ -43,6 +44,22 @@ class _HomeScreenState extends State<HomeScreen> {
         "productAmazonRating": "3/5",
         "productImageURL": "productImageURL",
         "productURL": "productURL"
+      },
+      {
+        "productName": "productName",
+        "productPrice": r"9999$",
+        "productModelRating": "5/5",
+        "productAmazonRating": "2/5",
+        "productImageURL": "productImageURL",
+        "productURL": "productURL"
+      },
+      {
+        "productName": "productName",
+        "productPrice": r"9999$",
+        "productModelRating": "5/5",
+        "productAmazonRating": "2/5",
+        "productImageURL": "productImageURL",
+        "productURL": "productURL"
       }
     ];
     if (data != null) {
@@ -59,12 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //backgroundColor: Colors.purple[50],
       body: (data == null)
           ? Center(child: Text("Your History is empty"))
-          : ListView.builder(
-              itemCount: productsHistory.length,
-              itemBuilder: (context, index) {
-                return ProductCard(product: productsHistory[index], parentScreen: ParentScreen.history,);
-              },
-            ),
+          : ProductList(productList: productsHistory, parentScreen: ParentScreen.history,)
     );
   }
 }
