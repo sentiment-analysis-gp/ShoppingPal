@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/authenticationService.dart';
 
 class CustomDrawer extends StatelessWidget {
-  TextStyle textStyle = TextStyle(
+  final TextStyle textStyle = TextStyle(
     fontFamily: "Lato",
     fontSize: 18,
     color: Colors.black,
@@ -25,8 +26,12 @@ class CustomDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          ExactAssetImage("assets/images/logo.png"),
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.person_outline,
+                        color: kPrimaryColor,
+                        size: size.width * 0.07,
+                      ),
                       radius: size.width * 0.07,
                     ),
                     SizedBox(
@@ -51,7 +56,10 @@ class CustomDrawer extends StatelessWidget {
                 'Home',
                 style: textStyle,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/home');
+              },
             ),
             ListTile(
               leading: Icon(Icons.person_outline, color: kPrimaryColor),
@@ -59,7 +67,10 @@ class CustomDrawer extends StatelessWidget {
                 'Profile',
                 style: textStyle,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/profile');
+              },
             ),
             ListTile(
               leading: Icon(Icons.star_outline, color: kPrimaryColor),
@@ -67,6 +78,10 @@ class CustomDrawer extends StatelessWidget {
                 'Wishlist',
                 style: textStyle,
               ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/profile');
+              },
             ),
             ListTile(
               leading: Icon(Icons.logout, color: kPrimaryColor),
@@ -74,6 +89,11 @@ class CustomDrawer extends StatelessWidget {
                 'Logout',
                 style: textStyle,
               ),
+              onTap: () async {
+                var result = await AuthenticationService().signOut();
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/');
+              },
             ),
           ]),
         ),

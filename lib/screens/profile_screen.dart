@@ -63,8 +63,12 @@ class ProfileScreen extends StatelessWidget {
                   backgroundColor: kPrimaryColor,
                   radius: size.width * 0.2 + 3.0,
                   child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage("assets/images/default_profile_image.png"),
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person_outline,
+                      color: kPrimaryColor,
+                      size: size.width * 0.2,
+                    ),
                     radius: size.width * 0.2,
                   ),
                 ),
