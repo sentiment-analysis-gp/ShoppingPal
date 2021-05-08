@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  backgroundColor: kPrimaryColor,
+                  backgroundColor: kSecondaryColor,
                   radius: size.width * 0.2 + 3.0,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                       width: 15.0,
                     ),
                     Text(
-                      "01234567890",
+                      "01014403361",
                       style: kSecondaryTextStyle.copyWith(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -114,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                       width: 15.0,
                     ),
                     Text(
-                      "Ahmed.Montasser@yahoo.com",
+                      "Ahmad.Montasser@yahoo.com",
                       style: kSecondaryTextStyle.copyWith(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -124,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 20.0,
                 ),
                 Divider(
-                  color: kPrimaryColor,
+                  color: kSecondaryColor,
                   thickness: 3.0,
                   indent: 20.0,
                   endIndent: 20.0,
