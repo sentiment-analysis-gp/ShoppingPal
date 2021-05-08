@@ -9,11 +9,12 @@ import 'package:shopping_pal/screens/sign_up_screen.dart';
 const kPrimaryColor = Color(0xFF623797);
 const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
-  //'/': (context) => WelcomeScreen(),
-  '/': (context) => HomeScreen(),
+  '/': (context) => WelcomeScreen(),
+  '/search': (context) => SearchScreen(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
+  '/loading': (context) => LoadingScreen(),
 };
 final kMainTextStyle = TextStyle(
   fontFamily: "Bungee",

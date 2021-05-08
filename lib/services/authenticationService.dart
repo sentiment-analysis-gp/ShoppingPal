@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shopping_pal/models/user.dart' as model;
 
 class AuthenticationService {
@@ -9,11 +8,7 @@ class AuthenticationService {
       FirebaseFirestore.instance.collection('users');
 
   Future signUpWithEmail(
-    String name,
-    String email,
-    String phoneNumber,
-    String password,
-  ) async {
+      {String name, String email, String phoneNumber, String password}) async {
     try {
       var authResult = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -38,7 +33,7 @@ class AuthenticationService {
     }
   }
 
-  Future signIn(String email, String password) async {
+  signIn(String email, String password) async {
     try {
       dynamic data;
       UserCredential result = await _auth.signInWithEmailAndPassword(
