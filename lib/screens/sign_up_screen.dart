@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopping_pal/models/user.dart' as model;
+import 'package:shopping_pal/screens/shared/loading_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -188,12 +189,18 @@ class SignUpScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       onPressed: () async {
-                        try {
-                          AuthenticationService().signUpWithEmail(
-                              name, email, phoneNumber, password);
-                        } catch (e) {
-                          print(e);
-                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoadingScreen(
+                              email: email,
+                              password: password,
+                              name: name,
+                              phoneNumber: phoneNumber,
+                              routeName: '/signup',
+                            ),
+                          ),
+                        );
                       },
                       child: Text(
                         "Submit",

@@ -1,63 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_pal/models/product.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart';
-import 'package:shopping_pal/services/databaseService.dart';
-import 'dart:convert';
+import 'package:shopping_pal/screens/home_screen.dart';
+import 'package:shopping_pal/services/authenticationService.dart';
+import 'package:splashscreen/splashscreen.dart';
 
+class LoadingScreen extends StatefulWidget {
+  final String routeName;
+  final String email;
+  final String password;
+  final String name;
+  final String phoneNumber;
 
-class Loading extends StatefulWidget {
+  LoadingScreen(
+      {@required this.routeName,
+      @required this.email,
+      @required this.password,
+      this.phoneNumber,
+      this.name});
+
   @override
-  _LoadingState createState() => _LoadingState();
+  _LoadingScreenState createState() => _LoadingScreenState();
 }
 
-class _LoadingState extends State<Loading> {
-
-  void setupProduct() async{
-    DatabaseService db = DatabaseService();
-    List<Map<String, dynamic>> result = await db.getProduct();
-    Navigator.pushReplacementNamed(context, '/home', arguments: (result!=null)?result:{
-      "productName" : "Not Found",
-      "productPrice" : "",
-      "productModelRating": "",
-      "productAmazonRating": "",
-      "productImageURL": "",
-      "productURL": ""
-    });
+class _LoadingScreenState extends State<LoadingScreen> {
+  Future<Widget> setupLoadingScreen() async {
+    switch (widget.routeName) {
+      case '/login':
+        Future result =
+            await AuthenticationService().signIn(widget.email, widget.password);
+        return Future.value(HomeScreen());
+        break;
+      case '/signup':
+        Future result = await AuthenticationService().signUpWithEmail(
+            email: widget.email,
+            password: widget.password,
+            name: widget.name,
+            phoneNumber: widget.phoneNumber);
+        result =
+            await AuthenticationService().signIn(widget.email, widget.password);
+        return Future.value(HomeScreen());
+        break;
+    }
   }
 
-  @override
-  void initState(){
-    super.initState();
-    setupProduct();
-  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.grey[900],
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SpinKitRotatingCircle(
-                color: Colors.blue[700],
-                size: 50.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-                child: Text(
-                  'Loading',
-                  style: TextStyle(
-                    fontSize: 40.0,
-                    letterSpacing: 2.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )
+    return SafeArea(
+      child: SplashScreen(
+        navigateAfterFuture: setupLoadingScreen(),
+        backgroundColor: Colors.white,
+        image: Image.asset('assets/images/loading_screen1.gif'),
+        photoSize: 200,
+      ),
     );
   }
-
 }
