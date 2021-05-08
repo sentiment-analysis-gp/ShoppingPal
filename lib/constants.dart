@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/screens/home_screen.dart';
+import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/screens/search_result_screen.dart';
 import 'package:shopping_pal/screens/shared/loading_screen.dart';
 import 'package:shopping_pal/screens/welcome_screen.dart';
@@ -9,7 +10,8 @@ import 'package:shopping_pal/screens/sign_up_screen.dart';
 const kPrimaryColor = Color(0xFF623797);
 const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
-  '/': (context) => WelcomeScreen(),
+   '/': (context) => WelcomeScreen(),
+  '/profile': (context) => ProfileScreen(),
   '/search': (context) => SearchScreen(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
