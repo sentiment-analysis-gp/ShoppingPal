@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/screens/shared/loading_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -99,7 +100,16 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       onPressed: () {
-                        AuthenticationService().signIn(email, password);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoadingScreen(
+                              email: email,
+                              password: password,
+                              routeName: '/login',
+                            ),
+                          ),
+                        );
                       },
                       child: Text(
                         "Login",
