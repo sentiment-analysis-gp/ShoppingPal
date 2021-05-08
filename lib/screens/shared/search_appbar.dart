@@ -12,18 +12,29 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _SearchAppBarState extends State<SearchAppBar> {
   bool isSearch = false; // boolean to determine if user clicked the search icon
   TextField searchField = TextField(
-      decoration: InputDecoration(
-          border: UnderlineInputBorder(), hintText: 'Enter a search term'),
-      autofocus: true,
-    );
-  Text appBarTitle = Text(
-    "ShoppingPal",
-    style: kSecondaryTextStyle.copyWith(color: Colors.white, fontSize: 23.0),
+    decoration: InputDecoration(
+        border: UnderlineInputBorder(), hintText: 'Enter a search term'),
+    autofocus: true,
+  );
+  RichText appBarTitle = RichText(
+    text: TextSpan(
+      text: 'Shopping',
+      style: kMainTextStyle.copyWith(
+        color: Colors.white,
+      ),
+      children: <TextSpan>[
+        TextSpan(
+          text: ' Pal',
+          style: kMainTextStyle.copyWith(
+            color: kPrimaryColor,
+          ),
+        ),
+      ],
+    ),
   );
 
   @override
   PreferredSizeWidget build(BuildContext context) {
-
     IconButton cancelBtn = IconButton(
         icon: Icon(Icons.cancel_outlined),
         onPressed: () {
@@ -36,24 +47,25 @@ class _SearchAppBarState extends State<SearchAppBar> {
         });
 
     IconButton searchBtn = IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            if (!isSearch) {
-              //check if the user has clicked the search icon before if false set state of isSearch to true to view the search bar
-              setState(() {
-                isSearch = true;
-              });
-            } else {
-              //if the user has already clicked the item before begin search process
-              //ToDo: Search process
-            }
-          });
+        icon: Icon(Icons.search),
+        onPressed: () {
+          if (!isSearch) {
+            //check if the user has clicked the search icon before if false set state of isSearch to true to view the search bar
+            setState(() {
+              isSearch = true;
+            });
+          } else {
+            //if the user has already clicked the item before begin search process
+            //ToDo: Search process
+          }
+        });
 
     Widget isSearchSelected = isSearch ? searchField : appBarTitle;
     return AppBar(
       title: isSearchSelected,
-      backgroundColor: kPrimaryColor,
-      actions: (isSearch)? [cancelBtn, searchBtn] : [searchBtn],
+      backgroundColor: Colors.transparent,
+      toolbarOpacity: 0.5,
+      actions: (isSearch) ? [cancelBtn, searchBtn] : [searchBtn],
     );
   }
 }

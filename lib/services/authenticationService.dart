@@ -7,6 +7,10 @@ class AuthenticationService {
   final CollectionReference _dbUsers =
       FirebaseFirestore.instance.collection('users');
 
+  Future signOut() {
+    return _auth.signOut();
+  }
+
   Future signUpWithEmail(
       {String name, String email, String phoneNumber, String password}) async {
     try {
