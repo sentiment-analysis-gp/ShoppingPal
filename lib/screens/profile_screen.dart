@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/list_products.dart';
@@ -52,7 +50,8 @@ class ProfileScreen extends StatelessWidget {
       appBar: SearchAppBar(),
       drawer: CustomDrawer(),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(size.width*0.0, size.width*0.1, size.width*0.0, size.width*0.0),
+        padding: EdgeInsets.fromLTRB(size.width * 0.0, size.width * 0.1,
+            size.width * 0.0, size.width * 0.0),
         child: SingleChildScrollView(
           physics: ScrollPhysics(),
           child: Align(
@@ -62,28 +61,34 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: kPrimaryColor,
-                  radius: size.width*0.2+3.0,
+                  radius: size.width * 0.2 + 3.0,
                   child: CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/default_profile_image.png"),
-                    radius: size.width*0.2,
-
+                    backgroundImage:
+                        AssetImage("assets/images/default_profile_image.png"),
+                    radius: size.width * 0.2,
                   ),
                 ),
-                SizedBox(height: 20.0,),
-                Text(
-                    "Ahmed Montasser",
-                  style: kSecondaryTextStyle.copyWith(
-                    fontSize: 25, fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: 20.0,
                 ),
-                SizedBox(height: 20.0,),
+                Text(
+                  "Ahmed Montasser",
+                  style: kSecondaryTextStyle.copyWith(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                        Icons.phone_outlined,
+                      Icons.phone_outlined,
                       color: kPrimaryColor,
                     ),
-                    SizedBox(width: 15.0,),
+                    SizedBox(
+                      width: 15.0,
+                    ),
                     Text(
                       "01234567890",
                       style: kSecondaryTextStyle.copyWith(
@@ -91,15 +96,19 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                        Icons.email_outlined,
+                      Icons.email_outlined,
                       color: kPrimaryColor,
                     ),
-                    SizedBox(width: 15.0,),
+                    SizedBox(
+                      width: 15.0,
+                    ),
                     Text(
                       "Ahmed.Montasser@yahoo.com",
                       style: kSecondaryTextStyle.copyWith(
@@ -107,21 +116,30 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Divider(
                   color: kPrimaryColor,
                   thickness: 3.0,
-                   indent: 20.0,
+                  indent: 20.0,
                   endIndent: 20.0,
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Text(
                   "Wishlist",
                   style: kSecondaryTextStyle.copyWith(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20.0,),
-                ProductList(parentScreen: ParentScreen.wishList, productList: wishList,)
+                SizedBox(
+                  height: 20.0,
+                ),
+                ProductList(
+                  parentScreen: ParentScreen.wishList,
+                  productList: wishList,
+                )
               ],
             ),
           ),

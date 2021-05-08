@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/screens/shared/loading_screen.dart';
-import 'package:shopping_pal/services/authenticationService.dart';
 
 class LoginScreen extends StatelessWidget {
   String email;

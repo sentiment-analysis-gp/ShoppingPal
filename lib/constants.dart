@@ -8,15 +8,15 @@ import 'package:shopping_pal/screens/login_screen.dart';
 import 'package:shopping_pal/screens/sign_up_screen.dart';
 
 const kPrimaryColor = Color(0xFF623797);
+const kMiddleColor = Color(0xFFC47DFD);
 const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
-   '/': (context) => WelcomeScreen(),
+  '/': (context) => WelcomeScreen(),
   '/profile': (context) => ProfileScreen(),
   '/search': (context) => SearchScreen(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
-  '/loading': (context) => LoadingScreen(),
 };
 final kMainTextStyle = TextStyle(
   fontFamily: "Bungee",
@@ -36,7 +36,4 @@ final ThemeData kCustomThemeData = ThemeData(
   ),
 );
 
-enum ParentScreen {
-  wishList,
-  history
-}
+enum ParentScreen { wishList, history }

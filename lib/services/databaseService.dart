@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
 class DatabaseService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   List<Map<String, dynamic>> productJson = [
     {
       "productName": "productName",
