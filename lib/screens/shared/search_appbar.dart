@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_pal/constants.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -15,6 +16,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
           border: UnderlineInputBorder(), hintText: 'Enter a search term'),
       autofocus: true,
     );
+  Text appBarTitle = Text(
+    "ShoppingPal",
+    style: kSecondaryTextStyle.copyWith(color: Colors.white, fontSize: 23.0),
+  );
 
   @override
   PreferredSizeWidget build(BuildContext context) {
@@ -44,10 +49,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
             }
           });
 
-    Widget isSearchSelected = isSearch ? searchField : Text("ShoppingPal");
+    Widget isSearchSelected = isSearch ? searchField : appBarTitle;
     return AppBar(
       title: isSearchSelected,
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: kPrimaryColor,
       actions: (isSearch)? [cancelBtn, searchBtn] : [searchBtn],
     );
   }
