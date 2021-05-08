@@ -1,20 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/list_products.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
+import '../constants.dart';
 
-class _HomeScreenState extends State<HomeScreen> {
+class WishList extends StatelessWidget {
+  const WishList({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    List<Product> productsHistory = List<Product>();
+    List<Product> wishList = List<Product>();
 
     List<Map<String, dynamic>> data = [
       {
@@ -45,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "productName": "productName",
         "productPrice": r"9999$",
         "productModelRating": "5/5",
-        "productAmazonRating": "2/5",
+        "productAmazonRating": "5/5",
         "productImageURL": "productImageURL",
         "productURL": "productURL"
       },
@@ -53,40 +51,31 @@ class _HomeScreenState extends State<HomeScreen> {
         "productName": "productName",
         "productPrice": r"9999$",
         "productModelRating": "5/5",
-        "productAmazonRating": "2/5",
+        "productAmazonRating": "5/5",
         "productImageURL": "productImageURL",
         "productURL": "productURL"
       }
     ];
     if (data != null) {
       data.forEach((element) {
-        productsHistory.add(Product.fromData(element));
+        wishList.add(Product.fromData(element));
       });
     }
-
-    //if user has clicked the search icon before choose searchfield to display it else display the title of the app
-
-    return Scaffold(
+      return Scaffold(
         appBar: SearchAppBar(),
         drawer: CustomDrawer(),
-        //backgroundColor: Colors.purple[50],
         body: Column(
           children: [
             SizedBox(height: 15.0,),
             Text(
-              "Search History",
+              "Wishlist",
               style: kSecondaryTextStyle.copyWith(
                   fontSize: 25, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 15.0,),
-            Expanded(child: (data == null)
-                ? Center(child: Text("Your History is empty"))
-                : ProductList(
-              productList: productsHistory,
-              parentScreen: ParentScreen.history,
-            )),
+            Expanded(child: ProductList(productList: wishList, parentScreen: ParentScreen.wishList,)),
           ],
         )
-    );
+        );
   }
 }

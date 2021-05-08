@@ -43,6 +43,7 @@ class LoginScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   width: size.width * 0.8,
                   child: TextField(
+                    keyboardType: TextInputType.emailAddress,
                     style: TextStyle(
                       fontFamily: "Lato",
                       fontSize: 18,

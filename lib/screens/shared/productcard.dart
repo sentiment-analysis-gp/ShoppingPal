@@ -114,7 +114,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: size.width*0.39,),
-                        Icon(setSentimentIcon(product.productAmazonRating)),
+                        Icon(setSentimentIcon(product.productModelRating)),
                       ],
                     ),
                   )
@@ -130,10 +130,10 @@ class ProductCard extends StatelessWidget {
   void handleClick(String value) {}
 }
 
-IconData setSentimentIcon(String produtcRating){
-  return (int.parse(produtcRating.substring(0, produtcRating.indexOf("/"))) < 3) ?
+IconData setSentimentIcon(String productRating){
+  return (int.parse(productRating.substring(0, productRating.indexOf("/"))) < 3) ?
   Icons.sentiment_dissatisfied_outlined
-      : ((int.parse(produtcRating.substring(0, 1)) == 3) ?
+      : ((int.parse(productRating.substring(0, 1)) == 3) ?
   Icons.sentiment_neutral_outlined
       : Icons.sentiment_satisfied_outlined);
 }

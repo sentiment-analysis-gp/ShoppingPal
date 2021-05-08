@@ -6,6 +6,7 @@ import 'package:shopping_pal/screens/shared/loading_screen.dart';
 import 'package:shopping_pal/screens/welcome_screen.dart';
 import 'package:shopping_pal/screens/login_screen.dart';
 import 'package:shopping_pal/screens/sign_up_screen.dart';
+import 'package:shopping_pal/screens/wishlist_screen.dart';
 
 const kPrimaryColor = Color(0xFF623797);
 const kMiddleColor = Color(0xFFC47DFD);
@@ -14,6 +15,7 @@ final kAppRoutes = {
   '/': (context) => WelcomeScreen(),
   '/profile': (context) => ProfileScreen(),
   '/search': (context) => SearchScreen(),
+  '/wishlist': (context) => WishList(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
