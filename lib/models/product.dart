@@ -1,35 +1,47 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Product {
-  final String productURL;
+  String productURL;
   final String productName;
-  final String productPrice;
+  final int productPrice;
   final String productImageURL;
-  final String productAmazonRating;
-  final String productModelRating;
+  final double productAmazonRating;
+  final int productModelRating;
+  final int numberOfReviews;
+
   Product(
-      {@required this.productURL,
+      {this.productURL,
       @required this.productName,
       @required this.productPrice,
-      this.productAmazonRating,
-      this.productImageURL,
-      this.productModelRating});
-
-  Product.fromData(Map<String, dynamic> data)
-      : productName = data['productName'],
-        productPrice = data['productPrice'],
-        productModelRating = data['productModelRating'],
-        productAmazonRating = data['productAmazonRating'],
-        productImageURL = data['productImageURL'],
-        productURL = data['productURL'];
-
+      @required this.productAmazonRating,
+      @required this.productImageURL,
+      @required this.productModelRating,
+      @required this.numberOfReviews});
 
   Map<String, dynamic> toJson() => {
-      'productName': productName,
-      'productPrice': productPrice,
-      'productModelRating': productModelRating,
-      'productAmazonRating': productAmazonRating,
-      'productImageURL': productImageURL,
-      'productURL': productURL,
-    };
+        'product_URL': productURL,
+        'product_title': productName,
+        'price': productPrice,
+        'product_image': productImageURL,
+        'average_rating': productAmazonRating,
+        'model_rating': productModelRating,
+        'number_of_reviews': numberOfReviews,
+      };
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      productURL: json['product_URL'],
+      productName: json['product_title'],
+      productPrice: json['price'],
+      productImageURL: json['product_image'],
+      productAmazonRating: json['average_rating'],
+      productModelRating: json['model_rating'],
+      numberOfReviews: json['number_of_reviews'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'URL: $productURL \nName: $productName\nAmazonRating: $productAmazonRating\nPrice: $productPrice\nModelRating: $productModelRating\nImageURL: $productImageURL';
+  }
 }

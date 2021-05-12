@@ -14,11 +14,13 @@ const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
   '/': (context) => WelcomeScreen(),
   '/profile': (context) => ProfileScreen(),
-  '/search': (context) => SearchScreen(),
+  '/search': (context) => SearchResultScreen(),
   '/wishlist': (context) => WishList(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
+  //for testing
+  //'/': (context) => SearchResultScreen(),
 };
 final kMainTextStyle = TextStyle(
   fontFamily: "Bungee",
@@ -39,3 +41,5 @@ final ThemeData kCustomThemeData = ThemeData(
 );
 
 enum ParentScreen { wishList, history }
+
+Map sentimentTypes = {2: 'Positive', 0: 'Negative', 1: 'Neutral'};

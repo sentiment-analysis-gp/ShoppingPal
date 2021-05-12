@@ -46,7 +46,7 @@ class AuthenticationService {
           .doc(result.user.uid)
           .get()
           .then((value) => data = value.data());
-      model.User user = model.User.fromData(data);
+      model.User user = model.User.fromJson(data);
       print(user.uid);
       return;
     } catch (e) {

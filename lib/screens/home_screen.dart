@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
-import 'package:shopping_pal/models/product.dart';
+
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
-import 'package:shopping_pal/screens/shared/list_products.dart';
+import 'package:shopping_pal/services/databaseService.dart';
+import 'shared/product_stream.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,59 +13,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final DatabaseService _dbServices = DatabaseService();
+
   @override
   Widget build(BuildContext context) {
-    List<Product> productsHistory = List<Product>();
-
-    List<Map<String, dynamic>> data = [
-      {
-        "productName": "productName",
-        "productPrice": r"9999$",
-        "productModelRating": "5/5",
-        "productAmazonRating": "2/5",
-        "productImageURL": "productImageURL",
-        "productURL": "productURL"
-      },
-      {
-        "productName": "productName",
-        "productPrice": r"9999$",
-        "productModelRating": "5/5",
-        "productAmazonRating": "5/5",
-        "productImageURL": "productImageURL",
-        "productURL": "productURL"
-      },
-      {
-        "productName": "productName",
-        "productPrice": r"9999$",
-        "productModelRating": "5/5",
-        "productAmazonRating": "3/5",
-        "productImageURL": "productImageURL",
-        "productURL": "productURL"
-      },
-      {
-        "productName": "productName",
-        "productPrice": r"9999$",
-        "productModelRating": "5/5",
-        "productAmazonRating": "2/5",
-        "productImageURL": "productImageURL",
-        "productURL": "productURL"
-      },
-      {
-        "productName": "productName",
-        "productPrice": r"9999$",
-        "productModelRating": "5/5",
-        "productAmazonRating": "2/5",
-        "productImageURL": "productImageURL",
-        "productURL": "productURL"
-      }
-    ];
-    if (data != null) {
-      data.forEach((element) {
-        productsHistory.add(Product.fromData(element));
-      });
-    }
-
-    //if user has clicked the search icon before choose searchfield to display it else display the title of the app
+    //if user has clicked the search icon before choose search field to display it else display the title of the app
 
     return Scaffold(
         appBar: SearchAppBar(),
@@ -72,21 +25,26 @@ class _HomeScreenState extends State<HomeScreen> {
         //backgroundColor: Colors.purple[50],
         body: Column(
           children: [
-            SizedBox(height: 15.0,),
+            SizedBox(
+              height: 15.0,
+            ),
             Text(
               "Search History",
               style: kSecondaryTextStyle.copyWith(
                   fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 15.0,),
-            Expanded(child: (data == null)
-                ? Center(child: Text("Your History is empty"))
-                : ProductList(
-              productList: productsHistory,
-              parentScreen: ParentScreen.history,
-            )),
+            SizedBox(
+              height: 15.0,
+            ),
+            Expanded(
+              child: Center(
+                child: ProductsStream(
+                  stream: _dbServices.getSearchHistoryStream(),
+                  dataPath: 'searchHistory',
+                ),
+              ),
+            ),
           ],
-        )
-    );
+        ));
   }
 }

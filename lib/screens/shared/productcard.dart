@@ -1,36 +1,42 @@
 import 'package:shopping_pal/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class ProductCard extends StatelessWidget {
   Product product;
   ParentScreen parentScreen;
   Widget actionsRow;
+  final DatabaseService _dbService = DatabaseService();
 
   ProductCard({this.product, this.parentScreen});
-
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    if(parentScreen==ParentScreen.history){
+    if (parentScreen == ParentScreen.history) {
       actionsRow = Row(
         children: [
           IconButton(
               icon: Icon(Icons.add_shopping_cart_outlined),
-              onPressed: (){}
-              ),
+              onPressed: () {
+                _dbService.addProductToWishList(product);
+              }),
           IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: (){},
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              _dbService.removeProductFromSearchHistory(product);
+            },
           )
         ],
       );
     } else {
       actionsRow = IconButton(
         icon: Icon(Icons.delete),
-        onPressed: (){},
+        onPressed: () {
+          _dbService.removeProductFromWishList(product);
+        },
       );
     }
 
@@ -65,7 +71,7 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 4.0),
-                  Text(product.productPrice,
+                  Text(product.productPrice.toString(),
                       style: kSecondaryTextStyle.copyWith(
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.0),
@@ -76,19 +82,24 @@ class ProductCard extends StatelessWidget {
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircleAvatar(
-                          backgroundImage: ExactAssetImage("assets/images/amazon_logo.png"),
+                          backgroundImage:
+                              ExactAssetImage("assets/images/amazon_logo.png"),
                           radius: size.width * 0.05,
                           backgroundColor: Colors.white,
                         ),
-                        SizedBox(width: size.width*0.05,),
+                        SizedBox(
+                          width: size.width * 0.05,
+                        ),
                         Text(
-                          product.productAmazonRating,
+                          product.productAmazonRating.toString(),
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: size.width*0.39,),
+                        SizedBox(
+                          width: size.width * 0.39,
+                        ),
                         Icon(setSentimentIcon(product.productAmazonRating)),
                       ],
                     ),
@@ -101,20 +112,26 @@ class ProductCard extends StatelessWidget {
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircleAvatar(
-                          backgroundImage: ExactAssetImage("assets/images/launcher_icon.png"),
+                          backgroundImage: ExactAssetImage(
+                              "assets/images/launcher_icon.png"),
                           radius: size.width * 0.05,
                           backgroundColor: Colors.white,
                         ),
-                        SizedBox(width: size.width*0.05,),
+                        SizedBox(
+                          width: size.width * 0.05,
+                        ),
                         Text(
-                          product.productModelRating,
+                          product.productModelRating.toString(),
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: size.width*0.39,),
-                        Icon(setSentimentIcon(product.productModelRating)),
+                        SizedBox(
+                          width: size.width * 0.39,
+                        ),
+                        Icon(setSentimentIcon(
+                            product.productModelRating.toDouble())),
                       ],
                     ),
                   )
@@ -130,10 +147,11 @@ class ProductCard extends StatelessWidget {
   void handleClick(String value) {}
 }
 
-IconData setSentimentIcon(String productRating){
-  return (int.parse(productRating.substring(0, productRating.indexOf("/"))) < 3) ?
-  Icons.sentiment_dissatisfied_outlined
-      : ((int.parse(productRating.substring(0, 1)) == 3) ?
-  Icons.sentiment_neutral_outlined
-      : Icons.sentiment_satisfied_outlined);
+IconData setSentimentIcon(double productRating) {
+  print(productRating);
+  return (productRating < 1)
+      ? Icons.sentiment_dissatisfied_outlined
+      : (productRating == 1)
+          ? Icons.sentiment_neutral_outlined
+          : Icons.sentiment_satisfied_outlined;
 }
