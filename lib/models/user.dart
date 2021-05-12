@@ -7,17 +7,25 @@ class User {
   final String email;
   final String phoneNumber;
   List<Product> wishList;
-  List<Product> searchHistory;
+  var searchHistory = {};
+
   User(
       {@required this.uid,
       @required this.name,
       @required this.email,
-      @required this.phoneNumber});
-  User.fromData(Map<String, dynamic> data)
-      : uid = data['id'],
-        name = data['fullName'],
-        email = data['email'],
-        phoneNumber = data['phoneNumber'];
+      @required this.phoneNumber,
+      this.searchHistory});
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      uid: json['id'],
+      name: json['fullName'],
+      email: json['email'],
+      phoneNumber: json['phoneNumber'],
+      searchHistory: json['searchHistory'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': uid,

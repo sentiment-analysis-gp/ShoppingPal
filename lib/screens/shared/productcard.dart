@@ -91,8 +91,7 @@ class ProductCard extends StatelessWidget {
                         SizedBox(
                           width: size.width * 0.39,
                         ),
-                        Icon(setSentimentIcon(
-                            product.productAmazonRating.toString())),
+                        Icon(setSentimentIcon(product.productAmazonRating)),
                       ],
                     ),
                   ),
@@ -113,7 +112,7 @@ class ProductCard extends StatelessWidget {
                           width: size.width * 0.05,
                         ),
                         Text(
-                          product.productModelRating,
+                          product.productModelRating.toString(),
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -122,7 +121,8 @@ class ProductCard extends StatelessWidget {
                         SizedBox(
                           width: size.width * 0.39,
                         ),
-                        Icon(setSentimentIcon(product.productModelRating)),
+                        Icon(setSentimentIcon(
+                            product.productModelRating.toDouble())),
                       ],
                     ),
                   )
@@ -138,10 +138,11 @@ class ProductCard extends StatelessWidget {
   void handleClick(String value) {}
 }
 
-IconData setSentimentIcon(String productRating) {
-  return (int.parse(productRating.substring(0, productRating.indexOf("/"))) < 3)
+IconData setSentimentIcon(double productRating) {
+  print(productRating);
+  return (productRating < 1)
       ? Icons.sentiment_dissatisfied_outlined
-      : ((int.parse(productRating.substring(0, 1)) == 3)
+      : (productRating == 1)
           ? Icons.sentiment_neutral_outlined
-          : Icons.sentiment_satisfied_outlined);
+          : Icons.sentiment_satisfied_outlined;
 }

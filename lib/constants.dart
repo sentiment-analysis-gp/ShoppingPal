@@ -41,3 +41,5 @@ final ThemeData kCustomThemeData = ThemeData(
 );
 
 enum ParentScreen { wishList, history }
+
+Map sentimentTypes = {2: 'Positive', 0: 'Negative', 1: 'Neutral'};

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/product.dart';
 
 class DatabaseService {
@@ -23,7 +22,10 @@ class DatabaseService {
 
   void addProductToSearchHistory(Product p) async {
     loggedInUserDocument.update({'searchHistory.${p.productName}': p.toJson()});
-    // await productRef.update(p.toJson()).then((value) => print('succesful'));
+  }
+
+  void addProductToWishList(Product p) async {
+    loggedInUserDocument.update({'wishList.${p.productName}': p.toJson()});
   }
 
   Stream getSearchHistoryStream() {

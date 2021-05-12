@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
-import 'package:shopping_pal/models/product.dart';
+
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
-import 'package:shopping_pal/screens/shared/list_products.dart';
+import 'shared/product_stream.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,7 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 15.0,
             ),
-            Expanded(child: Center(child: Text("Your History is empty"))),
+            Expanded(
+              child: Center(
+                child: ProductsStream(),
+              ),
+            ),
           ],
         ));
   }

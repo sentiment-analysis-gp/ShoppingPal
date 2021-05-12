@@ -6,7 +6,7 @@ class Product {
   final int productPrice;
   final String productImageURL;
   final double productAmazonRating;
-  final String productModelRating;
+  final int productModelRating;
   final int numberOfReviews;
 
   Product(
