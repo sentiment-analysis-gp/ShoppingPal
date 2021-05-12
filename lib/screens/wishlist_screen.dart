@@ -57,25 +57,30 @@ class WishList extends StatelessWidget {
       }
     ];
     if (data != null) {
-      data.forEach((element) {
-        wishList.add(Product.fromData(element));
-      });
+      data.forEach((element) {});
     }
-      return Scaffold(
+    return Scaffold(
         appBar: SearchAppBar(),
         drawer: CustomDrawer(),
         body: Column(
           children: [
-            SizedBox(height: 15.0,),
+            SizedBox(
+              height: 15.0,
+            ),
             Text(
               "Wishlist",
               style: kSecondaryTextStyle.copyWith(
                   fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 15.0,),
-            Expanded(child: ProductList(productList: wishList, parentScreen: ParentScreen.wishList,)),
+            SizedBox(
+              height: 15.0,
+            ),
+            Expanded(
+                child: ProductList(
+              productList: wishList,
+              parentScreen: ParentScreen.wishList,
+            )),
           ],
-        )
-        );
+        ));
   }
 }

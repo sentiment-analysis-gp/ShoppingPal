@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/services/networking.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -11,11 +13,7 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _SearchAppBarState extends State<SearchAppBar> {
   bool isSearch = false; // boolean to determine if user clicked the search icon
-  TextField searchField = TextField(
-    decoration: InputDecoration(
-        border: UnderlineInputBorder(), hintText: 'Enter a search term'),
-    autofocus: true,
-  );
+  String searchURL = '';
   RichText appBarTitle = RichText(
     text: TextSpan(
       text: 'Shopping',
@@ -35,6 +33,20 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   @override
   PreferredSizeWidget build(BuildContext context) {
+    TextField searchField = TextField(
+      style: kSecondaryTextStyle.copyWith(
+        color: Colors.white,
+      ),
+      decoration: InputDecoration(
+        border: UnderlineInputBorder(),
+        hintText: 'Enter a search term',
+      ),
+      autofocus: true,
+      onChanged: (enteredURL) {
+        searchURL = enteredURL;
+        print(searchURL);
+      },
+    );
     IconButton cancelBtn = IconButton(
         icon: Icon(Icons.cancel_outlined),
         onPressed: () {
@@ -48,7 +60,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
     IconButton searchBtn = IconButton(
         icon: Icon(Icons.search),
-        onPressed: () {
+        onPressed: () async {
           if (!isSearch) {
             //check if the user has clicked the search icon before if false set state of isSearch to true to view the search bar
             setState(() {
@@ -57,6 +69,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
           } else {
             //if the user has already clicked the item before begin search process
             //ToDo: Search process
+
+            Product p = await Networking().fetchProductData(searchURL);
+            p.productURL = searchURL;
+            print(p);
           }
         });
 

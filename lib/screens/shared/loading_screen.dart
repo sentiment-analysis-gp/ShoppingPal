@@ -48,7 +48,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       child: SplashScreen(
         navigateAfterFuture: setupLoadingScreen(),
         backgroundColor: Colors.white,
-        image: Image.asset('assets/images/loading_screen1.gif'),
+        image: Image.asset('assets/images/loading_screen.gif'),
         photoSize: 200,
       ),
     );

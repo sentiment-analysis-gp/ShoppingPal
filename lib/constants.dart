@@ -14,11 +14,13 @@ const kSecondaryColor = Color(0xFFD0B3F8);
 final kAppRoutes = {
   '/': (context) => WelcomeScreen(),
   '/profile': (context) => ProfileScreen(),
-  '/search': (context) => SearchScreen(),
+  '/search': (context) => SearchResultScreen(),
   '/wishlist': (context) => WishList(),
   '/home': (context) => HomeScreen(),
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
+  //for testing
+  //'/': (context) => SearchResultScreen(),
 };
 final kMainTextStyle = TextStyle(
   fontFamily: "Bungee",

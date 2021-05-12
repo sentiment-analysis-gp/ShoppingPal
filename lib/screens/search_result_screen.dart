@@ -2,74 +2,50 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
+import 'package:shopping_pal/constants.dart';
+import 'package:http/http.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key key}) : super(key: key);
+class SearchResultScreen extends StatefulWidget {
+  const SearchResultScreen({Key key}) : super(key: key);
 
+  @override
+  _SearchResultScreenState createState() => _SearchResultScreenState();
+}
+
+class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double pictureSize = size.width * 0.3;
     return Scaffold(
       appBar: SearchAppBar(),
       drawer: CustomDrawer(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+      body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundImage: ExactAssetImage("assets/images/logo.png"),
-              radius: size.width*0.2,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(size.width*0.3, 0, 0, size.width*0.3),
-                child: Icon(
-                    Icons.add_circle_outlined,
-                  size: size.width*0.09,
-                  color: Colors.deepPurple,
+            Stack(
+              children: [
+                CircleAvatar(
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/product_image_place_holder.png',
+                    image: '',
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height:15.0),
-            Text(
-              "Product Name",
-              style: TextStyle(
-                fontSize: 25.0,
-              ),
-            ),
-            SizedBox(height:15.0),
-            Text(
-              "ShoppingPal Rating: 5/5",
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-            SizedBox(width:10.0),
-            Text(
-              "Amazon Rating: 5/5",
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-            SizedBox(height:15.0),
-            Card(
-              child: Column(
-                //mainAxisAlignment: ,
-                children: [
-                  Text(
-                    "Postive Review Sample:",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                RawMaterialButton(
+                  onPressed: () {},
+                  elevation: 0,
+                  fillColor: kPrimaryColor,
+                  child: Icon(
+                    Icons.add_outlined,
+                    color: Colors.white,
+                    size: 20.0,
                   ),
-                  Text(
-                    "This Product is Awesome",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ],
-              ),
-            )
+                  shape: CircleBorder(),
+                ),
+              ],
+            ),
           ],
         ),
       ),
