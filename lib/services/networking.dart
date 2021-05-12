@@ -13,9 +13,10 @@ class Networking {
     match = pathRegexp.firstMatch(domain);
     String path = match[0].substring(1);
     domain = domain.substring(0, match.start);
-    print('$NETWORKINGID URL ' + productURL);
-    print('$NETWORKINGID path ' + path);
-    print('$NETWORKINGID domain ' + domain);
+    //for Debugging
+    // print('$NETWORKINGID URL ' + productURL);
+    // print('$NETWORKINGID path ' + path);
+    // print('$NETWORKINGID domain ' + domain);
 
     var response = await http.get(Uri.https(domain, path));
     if (response.statusCode == 200) {

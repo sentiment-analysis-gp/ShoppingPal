@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/services/networking.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -12,6 +13,7 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
+  DatabaseService _dbService = DatabaseService();
   bool isSearch = false; // boolean to determine if user clicked the search icon
   String searchURL = '';
   RichText appBarTitle = RichText(
@@ -72,6 +74,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
             Product p = await Networking().fetchProductData(searchURL);
             p.productURL = searchURL;
+            _dbService.addProductToSearchHistory(p);
             print(p);
           }
         });

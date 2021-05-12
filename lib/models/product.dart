@@ -19,12 +19,13 @@ class Product {
       @required this.numberOfReviews});
 
   Map<String, dynamic> toJson() => {
-        'productName': productName,
-        'productPrice': productPrice,
-        'productModelRating': productModelRating,
-        'productAmazonRating': productAmazonRating,
-        'productImageURL': productImageURL,
-        'productURL': productURL,
+        'product_URL': productURL,
+        'product_title': productName,
+        'price': productPrice,
+        'product_image': productImageURL,
+        'average_rating': productAmazonRating,
+        'model_rating': productModelRating,
+        'number_of_reviews': numberOfReviews,
       };
 
   factory Product.fromJson(Map<String, dynamic> json) {
