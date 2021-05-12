@@ -20,12 +20,24 @@ class DatabaseService {
     loggedInUserDocument = _dbUsers.doc(_auth.currentUser.uid);
   }
 
-  void addProductToSearchHistory(Product p) async {
-    loggedInUserDocument.update({'searchHistory.${p.productName}': p.toJson()});
+  void addProductToSearchHistory(Product product) async {
+    loggedInUserDocument
+        .update({'searchHistory.${product.productName}': product.toJson()});
   }
 
-  void addProductToWishList(Product p) async {
-    loggedInUserDocument.update({'wishList.${p.productName}': p.toJson()});
+  void removeProductFromSearchHistory(Product product) async {
+    loggedInUserDocument
+        .update({'searchHistory.${product.productName}': FieldValue.delete()});
+  }
+
+  void removeProductFromWishList(Product product) async {
+    loggedInUserDocument
+        .update({'wishList.${product.productName}': FieldValue.delete()});
+  }
+
+  void addProductToWishList(Product product) async {
+    loggedInUserDocument
+        .update({'wishList.${product.productName}': product.toJson()});
   }
 
   Stream getSearchHistoryStream() {

@@ -1,11 +1,13 @@
 import 'package:shopping_pal/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class ProductCard extends StatelessWidget {
   Product product;
   ParentScreen parentScreen;
   Widget actionsRow;
+  final DatabaseService _dbService = DatabaseService();
 
   ProductCard({this.product, this.parentScreen});
 
@@ -17,17 +19,24 @@ class ProductCard extends StatelessWidget {
       actionsRow = Row(
         children: [
           IconButton(
-              icon: Icon(Icons.add_shopping_cart_outlined), onPressed: () {}),
+              icon: Icon(Icons.add_shopping_cart_outlined),
+              onPressed: () {
+                _dbService.addProductToWishList(product);
+              }),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {},
+            onPressed: () {
+              _dbService.removeProductFromSearchHistory(product);
+            },
           )
         ],
       );
     } else {
       actionsRow = IconButton(
         icon: Icon(Icons.delete),
-        onPressed: () {},
+        onPressed: () {
+          _dbService.removeProductFromWishList(product);
+        },
       );
     }
 

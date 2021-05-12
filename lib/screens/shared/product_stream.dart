@@ -12,13 +12,16 @@ import 'package:shopping_pal/screens/shared/productcard.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
 class ProductsStream extends StatelessWidget {
-  final DatabaseService databaseService = DatabaseService();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseService _dbService = DatabaseService();
+  var stream;
+  String dataPath;
+
+  ProductsStream({this.stream, this.dataPath});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: databaseService.getSearchHistoryStream(),
+      stream: stream,
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -35,12 +38,12 @@ class ProductsStream extends StatelessWidget {
             ),
           );
         }
-        var searchHistoryRaw = snapshot.data['searchHistory'];
-        final searchHistoryMap = Map<String, dynamic>.from(searchHistoryRaw);
+        var productDataRaw = snapshot.data[dataPath];
+        final productMap = Map<String, dynamic>.from(productDataRaw);
         List<Product> productCards = [];
 
-        for (var product in searchHistoryMap.keys) {
-          var map = searchHistoryMap[product];
+        for (var product in productMap.keys) {
+          var map = productMap[product];
           Product p = Product.fromJson(map);
           // ProductCard productCard = ProductCard(
           //   product: p,
@@ -49,7 +52,9 @@ class ProductsStream extends StatelessWidget {
           productCards.add(p);
         }
         return ProductList(
-          parentScreen: ParentScreen.history,
+          parentScreen: dataPath == 'searchHistory'
+              ? ParentScreen.history
+              : ParentScreen.wishList,
           productList: productCards,
         );
       },
