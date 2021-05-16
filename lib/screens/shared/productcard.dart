@@ -62,20 +62,84 @@ class ProductCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        product.productName,
-                        style: kSecondaryTextStyle.copyWith(
-                            fontSize: 23, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          product.productName,
+                          style: kSecondaryTextStyle.copyWith(
+                              fontSize: 23, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       actionsRow
                     ],
                   ),
                   SizedBox(height: 4.0),
-                  Text(product.productPrice.toString(),
+                  Text(product.productPrice.toString() + r"$",
                       style: kSecondaryTextStyle.copyWith(
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.0),
-                  Padding(
+                  Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
+                    children: [
+                      TableRow(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage:
+                                ExactAssetImage("assets/images/amazon_logo.png"),
+                                radius: size.width * 0.05,
+                                backgroundColor: Colors.white,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            product.productAmazonRating.toString(),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
+                          Icon(setSentimentIcon(product.productAmazonRating)),
+                        ]
+                      ),
+                      TableRow(children: [SizedBox(height: 0.0,),SizedBox(height: 0.0,),SizedBox(height: 0.0,),SizedBox(height: 10.0,)]),
+                      TableRow(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: ExactAssetImage(
+                                    "assets/images/launcher_icon.png"),
+                                radius: size.width * 0.05,
+                                backgroundColor: Colors.white,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, size.height*0.0, 0.0, 0.0),
+                            child: Text(
+                              product.productModelRating.toString(),
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, size.height*0.0, 0.0, 0.0),
+                            child: Icon(setSentimentIcon(product.productModelRating.toDouble())),
+                          ),
+                        ]
+                      )
+                    ],
+                  )
+                  /*Padding(
                     padding: EdgeInsets.fromLTRB(size.width * 0.01,
                         size.width * 0.0, size.width * 0.0, size.width * 0.0),
                     child: Row(
@@ -93,13 +157,13 @@ class ProductCard extends StatelessWidget {
                         Text(
                           product.productAmazonRating.toString(),
                           style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        /*SizedBox(
                           width: size.width * 0.39,
-                        ),
+                        ),*/
                         Icon(setSentimentIcon(product.productAmazonRating)),
                       ],
                     ),
@@ -127,14 +191,14 @@ class ProductCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        /*SizedBox(
                           width: size.width * 0.39,
-                        ),
+                        ),*/
                         Icon(setSentimentIcon(
                             product.productModelRating.toDouble())),
                       ],
                     ),
-                  )
+                  )*/
                 ],
               ),
             ),
