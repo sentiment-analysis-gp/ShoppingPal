@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/models/user.dart' as model;
 
 class DatabaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,6 +39,12 @@ class DatabaseService {
   void addProductToWishList(Product product) async {
     loggedInUserDocument
         .update({'wishList.${product.productName}': product.toJson()});
+  }
+
+  Future<model.User> getUserDetails() async {
+    DocumentSnapshot documentSnapshot = await loggedInUserDocument.get();
+    model.User user = model.User.fromJson(documentSnapshot.data());
+    return user;
   }
 
   Stream getSearchHistoryStream() {

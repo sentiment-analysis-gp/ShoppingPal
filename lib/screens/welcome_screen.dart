@@ -106,11 +106,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      child: Image.asset(
-                        "assets/images/logo.png",
+                    Hero(
+                      tag: 'banner',
+                      child: Container(
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 20),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 20),
                     ),
                     Center(
                       child: Container(

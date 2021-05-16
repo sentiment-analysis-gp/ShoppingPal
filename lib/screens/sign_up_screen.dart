@@ -36,11 +36,14 @@ class SignUpScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  child: Image.asset(
-                    "assets/images/logo.png",
+                Hero(
+                  tag: 'banner',
+                  child: Container(
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 10),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),

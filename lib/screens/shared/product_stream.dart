@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/screens/shared/list_products.dart';
-import 'package:shopping_pal/screens/shared/productcard.dart';
+import 'package:shopping_pal/screens/shared/product_card.dart';
 
 import 'package:shopping_pal/services/databaseService.dart';
 
