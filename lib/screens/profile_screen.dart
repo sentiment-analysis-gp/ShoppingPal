@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_pal/models/user.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
-import 'package:shopping_pal/screens/shared/list_products.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key key}) : super(key: key);
+  final User user;
+
+  ProfileScreen({this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                "Ahmed Montasser",
+                user.name,
                 style: kSecondaryTextStyle.copyWith(
                     fontSize: 25, fontWeight: FontWeight.bold),
               ),
@@ -57,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                     width: 15.0,
                   ),
                   Text(
-                    "01014403361",
+                    user.phoneNumber,
                     style: kSecondaryTextStyle.copyWith(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -77,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
                     width: 15.0,
                   ),
                   Text(
-                    "Ahmad.Montasser@yahoo.com",
+                    user.email,
                     style: kSecondaryTextStyle.copyWith(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),

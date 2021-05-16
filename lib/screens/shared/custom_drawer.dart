@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/models/user.dart';
+import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final DatabaseService _databaseService = DatabaseService();
+  User user;
   final TextStyle textStyle = TextStyle(
     fontFamily: "Lato",
     fontSize: 18,
@@ -67,9 +72,17 @@ class CustomDrawer extends StatelessWidget {
                 'Profile',
                 style: textStyle,
               ),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/profile');
+                user = await _databaseService.getUserDetails();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      user: user,
+                    ),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -91,8 +104,8 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () async {
                 var result = await AuthenticationService().signOut();
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/');
+                Navigator.popUntil(
+                    context, ModalRoute.withName(Navigator.defaultRouteName));
               },
             ),
           ]),
