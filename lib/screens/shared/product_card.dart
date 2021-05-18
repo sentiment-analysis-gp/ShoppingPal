@@ -11,6 +11,16 @@ class ProductCard extends StatelessWidget {
 
   ProductCard({this.product, this.parentScreen});
 
+  Future<Product> getProductFromSearchHistory() async {
+    return await _dbService.getProductDetails(
+        product.productName, ParentScreen.history);
+  }
+
+  Future<Product> getProductFromWishList() async {
+    return await _dbService.getProductDetails(
+        product.productName, ParentScreen.wishList);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,7 +62,12 @@ class ProductCard extends StatelessWidget {
           elevation: 5.0,
           child: InkWell(
             splashColor: Colors.grey[300],
-            onTap: () {},
+            onTap: () async {
+              Product product = parentScreen == ParentScreen.history
+                  ? await getProductFromSearchHistory()
+                  : await getProductFromWishList();
+              print(product);
+            },
             child: Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.04, size.width * 0.02,
                   size.width * 0.02, size.width * 0.05),

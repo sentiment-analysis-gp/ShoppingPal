@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'product.dart';
 
 class User {
@@ -6,15 +6,16 @@ class User {
   final String name;
   final String email;
   final String phoneNumber;
-  List<Product> wishList;
-  var searchHistory = {};
+  dynamic wishList;
+  dynamic searchHistory;
 
   User(
       {@required this.uid,
       @required this.name,
       @required this.email,
       @required this.phoneNumber,
-      this.searchHistory});
+      this.searchHistory,
+      this.wishList});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -23,6 +24,7 @@ class User {
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       searchHistory: json['searchHistory'],
+      wishList: json['wishList'],
     );
   }
 
@@ -32,6 +34,13 @@ class User {
       'fullName': name,
       'email': email,
       'phoneNumber': phoneNumber,
+      'wishList': wishList,
+      'searchHistory': searchHistory,
     };
+  }
+
+  @override
+  String toString() {
+    return 'id: $uid\nfullName: $name\nemail: $email\nphoneNumber: $phoneNumber\nwishList: $wishList\nsearchHistory: $searchHistory';
   }
 }

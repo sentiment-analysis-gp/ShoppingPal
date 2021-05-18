@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_pal/models/user.dart';
 import 'package:shopping_pal/screens/home_screen.dart';
+import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class LoadingScreen extends StatefulWidget {
   final String routeName;
@@ -22,6 +25,8 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  final DatabaseService _dbService = DatabaseService();
+
   Future<Widget> setupLoadingScreen() async {
     switch (widget.routeName) {
       case '/login':
@@ -39,17 +44,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
             await AuthenticationService().signIn(widget.email, widget.password);
         return Future.value(HomeScreen());
         break;
+      case '/profile':
+        User user = await _dbService.getUserDetails();
+        return Future.value(ProfileScreen(
+          user: user,
+        ));
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SplashScreen(
-        navigateAfterFuture: setupLoadingScreen(),
-        backgroundColor: Colors.white,
-        image: Image.asset('assets/images/loading_screen.gif'),
-        photoSize: 200,
+      child: Expanded(
+        child: SplashScreen(
+          navigateAfterFuture: setupLoadingScreen(),
+          backgroundColor: Colors.white,
+          image: Image.asset('assets/images/loading_screen.gif'),
+          photoSize: 200,
+        ),
       ),
     );
   }
