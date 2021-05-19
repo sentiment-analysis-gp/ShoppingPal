@@ -6,6 +6,7 @@ class User {
   final String name;
   final String email;
   final String phoneNumber;
+  final String imageURL;
   List<Product> wishList;
   var searchHistory = {};
 
@@ -14,6 +15,7 @@ class User {
       @required this.name,
       @required this.email,
       @required this.phoneNumber,
+        this.imageURL,
       this.searchHistory});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class User {
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       searchHistory: json['searchHistory'],
+      imageURL: json['imageURL']
     );
   }
 
@@ -32,6 +35,7 @@ class User {
       'fullName': name,
       'email': email,
       'phoneNumber': phoneNumber,
+      'imageURL': imageURL,
     };
   }
 }

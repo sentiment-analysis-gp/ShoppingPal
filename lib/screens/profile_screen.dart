@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key key}) : super(key: key);
@@ -15,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  File _image;
+  String imageURL="";
   Size size;
 
   @override
@@ -38,11 +39,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: size.width * 0.2 + 3.0,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: _image != null
+                  child: imageURL.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(size.width * 0.5),
-                          child: Image.file(
-                            _image,
+                          child: Image.network(
+                            imageURL,
                             width: size.width * 0.6,
                             height: size.width * 0.6,
                             fit: BoxFit.fitHeight,
@@ -213,8 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: 'Crop Image',
         ));
     if (croppedFile != null) {
+      DatabaseService service = DatabaseService();
+      imageURL = await service.uploadImageToFirebase(context, croppedFile);
       setState(() {
-        _image = croppedFile;
+        imageURL;
       });
     }
   }
