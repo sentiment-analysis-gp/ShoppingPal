@@ -1,17 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/user.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final User user;
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key key}) : super(key: key);
 
-  ProfileScreen({this.user});
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String imageURL="";
+  Size size;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: SearchAppBar(),
@@ -29,12 +40,34 @@ class ProfileScreen extends StatelessWidget {
                 radius: size.width * 0.2 + 3.0,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person_outline,
-                    color: kPrimaryColor,
-                    size: size.width * 0.2,
-                  ),
+                  child: imageURL.isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(size.width * 0.5),
+                          child: Image.network(
+                            imageURL,
+                            width: size.width * 0.6,
+                            height: size.width * 0.6,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        )
+                      : Icon(
+                          Icons.person_outline,
+                          color: kPrimaryColor,
+                          size: size.width * 0.2,
+                        ),
                   radius: size.width * 0.2,
+                ),
+              ),
+              CircleAvatar(
+                backgroundColor: kPrimaryColor,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.camera_alt_outlined,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    _showPicker(context);
+                  },
                 ),
               ),
               SizedBox(
@@ -99,5 +132,94 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _imgFromCamera() async {
+    PickedFile image = await ImagePicker.platform.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+    );
+    _cropImage(image);
+  }
+
+  _imgFromGallery() async {
+    PickedFile image = await ImagePicker.platform.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    _cropImage(image);
+
+    /*setState(() {
+      _image = File(image.path);
+    });*/
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<Null> _cropImage(PickedFile pickedImage) async {
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: kPrimaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+        ));
+    if (croppedFile != null) {
+      DatabaseService service = DatabaseService();
+      imageURL = await service.uploadImageToFirebase(context, croppedFile);
+      setState(() {
+        imageURL;
+      });
+    }
   }
 }

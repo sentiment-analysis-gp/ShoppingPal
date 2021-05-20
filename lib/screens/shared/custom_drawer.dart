@@ -32,7 +32,7 @@ class CustomDrawer extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: Icon(
+                      child: Icon(//ToDo: update image when user change profile image
                         Icons.person_outline,
                         color: kPrimaryColor,
                         size: size.width * 0.07,
