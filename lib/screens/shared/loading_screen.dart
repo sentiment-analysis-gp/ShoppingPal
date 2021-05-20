@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/user.dart';
 import 'package:shopping_pal/screens/home_screen.dart';
 import 'package:shopping_pal/screens/profile_screen.dart';
@@ -55,13 +56,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Expanded(
-        child: SplashScreen(
-          navigateAfterFuture: setupLoadingScreen(),
-          backgroundColor: Colors.white,
-          image: Image.asset('assets/images/loading_screen.gif'),
-          photoSize: 200,
+      child: SplashScreen(
+        navigateAfterFuture: setupLoadingScreen(),
+        backgroundColor: Colors.white,
+        image: Image.asset('assets/images/loading_screen.gif'),
+        photoSize: size.width * 0.4,
+        title: Text(
+          'ShoppingPal',
+          style: kMainTextStyle.copyWith(color: kPrimaryColor),
+        ),
+        loaderColor: kPrimaryColor,
+        loadingText: Text(
+          widget.routeName == '/login' ? 'Logging In ...' : 'Signing Up',
+          style: kMainTextStyle.copyWith(color: kPrimaryColor),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/screens/product_screen.dart';
 import 'package:shopping_pal/services/networking.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
@@ -75,7 +76,16 @@ class _SearchAppBarState extends State<SearchAppBar> {
             Product p = await Networking().fetchProductData(searchURL);
             p.productURL = searchURL;
             _dbService.addProductToSearchHistory(p);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductScreen(
+                          product: p,
+                        )));
             print(p);
+            setState(() {
+              isSearch = false;
+            });
           }
         });
 

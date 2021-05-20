@@ -109,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       onPressed: () {
+                        FocusScope.of(context).unfocus();
                         Navigator.push(
                           context,
                           MaterialPageRoute(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/screens/home_screen.dart';
 import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/screens/search_result_screen.dart';
-import 'package:shopping_pal/screens/shared/loading_screen.dart';
+import 'screens/product_screen.dart';
 import 'package:shopping_pal/screens/welcome_screen.dart';
 import 'package:shopping_pal/screens/login_screen.dart';
 import 'package:shopping_pal/screens/sign_up_screen.dart';
@@ -20,7 +20,7 @@ final kAppRoutes = {
   '/login': (context) => LoginScreen(),
   '/signup': (context) => SignUpScreen(),
   //for testing
-  //'/': (context) => SearchResultScreen(),
+  '/product': (context) => ProductScreen(),
 };
 final kMainTextStyle = TextStyle(
   fontFamily: "Bungee",
@@ -39,6 +39,7 @@ final ThemeData kCustomThemeData = ThemeData(
     textTheme: ButtonTextTheme.primary,
   ),
 );
+List<Color> colorList = [kPrimaryColor, kMiddleColor, kSecondaryColor];
 
 enum ParentScreen { wishList, history }
 

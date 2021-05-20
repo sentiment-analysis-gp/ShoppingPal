@@ -1,6 +1,7 @@
 import 'package:shopping_pal/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/screens/product_screen.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
 class ProductCard extends StatelessWidget {
@@ -66,7 +67,13 @@ class ProductCard extends StatelessWidget {
               Product product = parentScreen == ParentScreen.history
                   ? await getProductFromSearchHistory()
                   : await getProductFromWishList();
-              print(product);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductScreen(
+                            product: product,
+                          )));
+              print(product.negSample);
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.04, size.width * 0.02,
