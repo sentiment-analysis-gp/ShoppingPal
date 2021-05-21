@@ -48,6 +48,10 @@ class DatabaseService {
         .update({'wishList.${product.productName}': product.toJson()});
   }
 
+  void addImageURL(String imageURL) async {
+    loggedInUserDocument.update({'imageURL': imageURL});
+  }
+
   Future<model.User> getUserDetails() async {
     DocumentSnapshot documentSnapshot = await loggedInUserDocument.get();
     model.User user = model.User.fromJson(documentSnapshot.data());
@@ -67,13 +71,12 @@ class DatabaseService {
     return loggedInUserDocument.snapshots(includeMetadataChanges: true);
   }
 
-  Future<String> uploadImageToFirebase(BuildContext context, File _imageFile) async {
+  Future<String> uploadImageToFirebase(
+      BuildContext context, File _imageFile) async {
     String fileName = basename(_imageFile.path);
-    TaskSnapshot uploadTask = await storage
-        .ref('profilePictures/$fileName')
-        .putFile(_imageFile);
+    TaskSnapshot uploadTask =
+        await storage.ref('profilePictures/$fileName').putFile(_imageFile);
     //ToDo: save download URL to user record in firestore
     return await uploadTask.ref.getDownloadURL();
   }
-
 }

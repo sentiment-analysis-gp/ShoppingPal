@@ -10,14 +10,15 @@ import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key key}) : super(key: key);
+  User user;
+
+  ProfileScreen({this.user});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String imageURL="";
   Size size;
 
   @override
@@ -40,11 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: size.width * 0.2 + 3.0,
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: imageURL.isNotEmpty
+                  child: widget.user.imageURL.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(size.width * 0.5),
                           child: Image.network(
-                            imageURL,
+                            widget.user.imageURL,
                             width: size.width * 0.6,
                             height: size.width * 0.6,
                             fit: BoxFit.fitHeight,
@@ -74,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 20.0,
               ),
               Text(
-                user.name,
+                widget.user.name,
                 style: kSecondaryTextStyle.copyWith(
                     fontSize: 25, fontWeight: FontWeight.bold),
               ),
@@ -92,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 15.0,
                   ),
                   Text(
-                    user.phoneNumber,
+                    widget.user.phoneNumber,
                     style: kSecondaryTextStyle.copyWith(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -112,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 15.0,
                   ),
                   Text(
-                    user.email,
+                    widget.user.email,
                     style: kSecondaryTextStyle.copyWith(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -216,10 +217,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
     if (croppedFile != null) {
       DatabaseService service = DatabaseService();
-      imageURL = await service.uploadImageToFirebase(context, croppedFile);
-      setState(() {
-        imageURL;
-      });
+      String imageURL =
+          await service.uploadImageToFirebase(context, croppedFile);
+      print(imageURL);
+      service.addImageURL(imageURL);
+      widget.user = await service.getUserDetails();
+      setState(() {});
     }
   }
 }

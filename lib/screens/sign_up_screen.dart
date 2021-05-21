@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/screens/shared/loading_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   String name;
+
   String email;
+
   String password;
+
   String phoneNumber;
+
   String confirmPassword;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

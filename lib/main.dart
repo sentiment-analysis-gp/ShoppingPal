@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_pal/screens/welcome_screen.dart';
 import 'constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

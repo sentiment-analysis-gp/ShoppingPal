@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
-import 'package:http/http.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({Key key}) : super(key: key);
@@ -15,8 +14,6 @@ class SearchResultScreen extends StatefulWidget {
 class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double pictureSize = size.width * 0.3;
     return Scaffold(
       appBar: SearchAppBar(),
       drawer: CustomDrawer(),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/constants.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 import 'product_card.dart';
 
 class ProductList extends StatelessWidget {

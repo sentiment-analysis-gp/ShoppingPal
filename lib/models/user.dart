@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'product.dart';
 
 class User {
   final String uid;
@@ -20,17 +19,15 @@ class User {
       this.imageURL,
       this.wishList});
 
-
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      uid: json['id'],
-      name: json['fullName'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
-      searchHistory: json['searchHistory'],
-      wishList: json['wishList'],
-      imageURL: json['imageURL']
-    );
+        uid: json['id'],
+        name: json['fullName'],
+        email: json['email'],
+        phoneNumber: json['phoneNumber'],
+        searchHistory: json['searchHistory'],
+        wishList: json['wishList'],
+        imageURL: json['imageURL']);
   }
 
   Map<String, dynamic> toJson() {

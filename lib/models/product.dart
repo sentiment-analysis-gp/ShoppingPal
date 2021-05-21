@@ -30,8 +30,7 @@ class Product {
       this.numberOfPosReviews,
       this.posSample});
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'product_URL': productURL,
         'product_title': productName,
         'price': productPrice,

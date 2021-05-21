@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_pal/models/product.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/product_stream.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
@@ -12,8 +11,6 @@ class WishList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> wishList = List<Product>();
-
     return Scaffold(
         appBar: SearchAppBar(),
         drawer: CustomDrawer(),

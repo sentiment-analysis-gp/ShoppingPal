@@ -5,9 +5,28 @@ import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   final DatabaseService _databaseService = DatabaseService();
+
   User user;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initializeUser();
+  }
+
+  void initializeUser() async {
+    user = await _databaseService.getUserDetails();
+    setState(() {});
+  }
+
   final TextStyle textStyle = TextStyle(
     fontFamily: "Lato",
     fontSize: 18,
@@ -32,18 +51,29 @@ class CustomDrawer extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: Icon(//ToDo: update image when user change profile image
-                        Icons.person_outline,
-                        color: kPrimaryColor,
-                        size: size.width * 0.07,
-                      ),
+                      child: user?.imageURL != null
+                          ? ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(size.width * 0.5),
+                              child: Image.network(
+                                user.imageURL,
+                                width: size.width * 0.14,
+                                height: size.width * 0.14,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            )
+                          : Icon(
+                              Icons.person_outline,
+                              color: kPrimaryColor,
+                              size: size.width * 0.07,
+                            ),
                       radius: size.width * 0.07,
                     ),
                     SizedBox(
                       width: 10.0,
                     ),
                     Text(
-                      'A. Montasser',
+                      user?.name ?? '',
                       style: kMainTextStyle.copyWith(
                         fontSize: 20,
                       ),

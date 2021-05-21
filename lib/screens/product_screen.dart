@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/services/databaseService.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'shared/custom_drawer.dart';
 import 'shared/search_appbar.dart';
 
 class ProductScreen extends StatelessWidget {
   final Product product;
+  final DatabaseService _dbService = DatabaseService();
 
   ProductScreen({this.product});
 
@@ -51,7 +53,7 @@ class ProductScreen extends StatelessWidget {
                         height: 35,
                         child: RawMaterialButton(
                           onPressed: () {
-                            print('object');
+                            _dbService.addProductToWishList(product);
                           },
                           elevation: 2.0,
                           fillColor: kPrimaryColor,
