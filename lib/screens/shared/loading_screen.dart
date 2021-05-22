@@ -26,13 +26,14 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  final DatabaseService _dbService = DatabaseService();
+  DatabaseService _dbService;
 
   Future<Widget> setupLoadingScreen() async {
     switch (widget.routeName) {
       case '/login':
         Future result =
-            await AuthenticationService().signIn(widget.email, widget.password);
+        await AuthenticationService().signIn(widget.email, widget.password);
+        _dbService = DatabaseService();
         return Future.value(HomeScreen());
         break;
       case '/signup':

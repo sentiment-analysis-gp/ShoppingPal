@@ -21,8 +21,8 @@ class WishList extends StatelessWidget {
             ),
             Text(
               "Wishlist",
-              style: kSecondaryTextStyle.copyWith(
-                  fontSize: 25, fontWeight: FontWeight.bold),
+              style:
+                  kMainTextStyle.copyWith(color: kPrimaryColor, fontSize: 35),
             ),
             SizedBox(
               height: 15.0,

@@ -164,14 +164,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: new Wrap(
                 children: <Widget>[
                   new ListTile(
-                      leading: new Icon(Icons.photo_library),
+                      leading: new Icon(
+                        Icons.photo_library,
+                        color: kPrimaryColor,
+                      ),
                       title: new Text('Photo Library'),
                       onTap: () {
                         _imgFromGallery();
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
-                    leading: new Icon(Icons.photo_camera),
+                    leading: new Icon(
+                      Icons.photo_camera,
+                      color: kPrimaryColor,
+                    ),
                     title: new Text('Camera'),
                     onTap: () {
                       _imgFromCamera();
@@ -217,12 +223,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
     if (croppedFile != null) {
       DatabaseService service = DatabaseService();
-      String imageURL =
-          await service.uploadImageToFirebase(context, croppedFile);
-      print(imageURL);
-      service.addImageURL(imageURL);
+      var o = await service.uploadImageToFirebase(context, croppedFile);
       widget.user = await service.getUserDetails();
-      setState(() {});
+      setState(() {
+        widget.user.imageURL;
+      });
     }
   }
 }
