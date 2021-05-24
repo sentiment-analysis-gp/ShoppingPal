@@ -7,19 +7,24 @@ import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
+import '../sign_up_screen.dart';
+
 class LoadingScreen extends StatefulWidget {
   final String routeName;
   final String email;
   final String password;
   final String name;
   final String phoneNumber;
+  final State<SignUpScreen> previousWidget;
 
   LoadingScreen(
       {@required this.routeName,
       @required this.email,
       @required this.password,
       this.phoneNumber,
-      this.name});
+      this.name,
+        this.previousWidget,
+      });
 
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -42,11 +47,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
             password: widget.password,
             name: widget.name,
             phoneNumber: widget.phoneNumber);
-        if(result == null) {
+        if(result == null || result == "null") {
+          //Navigator.popUntil(context, ModalRoute.withName('/'));
           return Future.value(HomeScreen());
         } else {
-          dispose();
           Navigator.pop(context, result);
+          return null;
         }
         break;
       case '/profile':
@@ -62,21 +68,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: SplashScreen(
-        navigateAfterFuture: setupLoadingScreen(),
-        backgroundColor: Colors.white,
-        image: Image.asset('assets/images/loading_screen.gif'),
-        photoSize: size.width * 0.4,
-        title: Text(
-          'ShoppingPal',
-          style: kMainTextStyle.copyWith(color: kPrimaryColor),
+        child: SplashScreen(
+          navigateAfterFuture: setupLoadingScreen(),
+          backgroundColor: Colors.white,
+          image: Image.asset('assets/images/loading_screen.gif'),
+          photoSize: size.width * 0.4,
+          title: Text(
+            'ShoppingPal',
+            style: kMainTextStyle.copyWith(color: kPrimaryColor),
+          ),
+          loaderColor: kPrimaryColor,
+          loadingText: Text(
+            widget.routeName == '/login' ? 'Logging In ...' : 'Signing Up',
+            style: kMainTextStyle.copyWith(color: kPrimaryColor),
+          ),
         ),
-        loaderColor: kPrimaryColor,
-        loadingText: Text(
-          widget.routeName == '/login' ? 'Logging In ...' : 'Signing Up',
-          style: kMainTextStyle.copyWith(color: kPrimaryColor),
-        ),
-      ),
-    );
+      );
   }
 }

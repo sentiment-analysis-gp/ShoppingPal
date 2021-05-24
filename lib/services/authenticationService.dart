@@ -22,15 +22,11 @@ class AuthenticationService {
           uid: authResult.user.uid,
           name: name,
           email: email,
-          phoneNumber: phoneNumber);
+          phoneNumber: phoneNumber,
+          imageURL: null,
+          searchHistory: {},
+          wishList: {});
       createUser(user);
-      dynamic data;
-      var userData = await _dbUsers
-          .doc(authResult.user.uid)
-          .get()
-          .then((value) => data = value.data());
-      user = model.User.fromJson(data);
-      print(user.uid);
       return;
     } catch (e) {
       return e.message.toString();

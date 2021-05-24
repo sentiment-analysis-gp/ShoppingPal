@@ -3,8 +3,9 @@ import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/screens/shared/loading_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _SignUpScreenState createState() =>_SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -225,6 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   name: name,
                                   phoneNumber: phoneNumber,
                                   routeName: '/signup',
+                                  previousWidget: this,
                                 ),
                               ),
                             );
