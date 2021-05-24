@@ -10,6 +10,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   String name;
 
+  String error;
+
   String email;
 
   String password;
@@ -185,6 +187,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
+                (error?.isNotEmpty ?? false)
+                    ? Container(
+                        padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        width: size.width * 0.8,
+                        child: Text(
+                          error,
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
                 Center(
                   child: Container(
                     width: size.width * 0.6,
@@ -197,18 +213,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoadingScreen(
-                              email: email,
-                              password: password,
-                              name: name,
-                              phoneNumber: phoneNumber,
-                              routeName: '/signup',
-                            ),
-                          ),
-                        );
+                        FocusScope.of(context).unfocus();
+                        if(validateInput())
+                          {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoadingScreen(
+                                  email: email,
+                                  password: password,
+                                  name: name,
+                                  phoneNumber: phoneNumber,
+                                  routeName: '/signup',
+                                ),
+                              ),
+                            );
+                            print('$result');
+                            /*if(mounted)
+                          error = '$result';*/
+                            if (mounted) {
+                              setState(() {
+                                error = '$result';
+                              });
+                            }
+                          }
                       },
                       child: Text(
                         "Submit",
@@ -223,5 +251,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  bool validateInput(){
+    if(name?.isEmpty?? true) {
+      error = "User name is required, please provide your name";
+      setErrorState();
+      return false;
+    }
+    if(phoneNumber?.isEmpty?? true) {
+      error = "Phone number is required, please provide your phone number";
+      setErrorState();
+      return false;
+    }
+    if(email?.isEmpty?? true) {
+      error = "Email is required, please provide your email";
+      setErrorState();
+      return false;
+    }
+    if(password?.isEmpty?? true) {
+      error = "Password is required, please provide your password";
+      setErrorState();
+      return false;
+    }
+    if(confirmPassword?.isEmpty?? true) {
+      error = "Please rewrite your password to confirm it";
+      setErrorState();
+      return false;
+    }
+    if(password != confirmPassword) {
+      error = "The passwords did not match";
+      setErrorState();
+      return false;
+    }
+    return true;
+  }
+
+  void setErrorState(){
+    setState(() {
+      error;
+    });
   }
 }

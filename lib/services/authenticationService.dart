@@ -24,8 +24,16 @@ class AuthenticationService {
           email: email,
           phoneNumber: phoneNumber);
       createUser(user);
+      dynamic data;
+      var userData = await _dbUsers
+          .doc(authResult.user.uid)
+          .get()
+          .then((value) => data = value.data());
+      user = model.User.fromJson(data);
+      print(user.uid);
+      return;
     } catch (e) {
-      return e.message;
+      return e.message.toString();
     }
   }
 

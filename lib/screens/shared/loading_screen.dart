@@ -37,14 +37,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
         return Future.value(HomeScreen());
         break;
       case '/signup':
-        Future result = await AuthenticationService().signUpWithEmail(
+        var result = await AuthenticationService().signUpWithEmail(
             email: widget.email,
             password: widget.password,
             name: widget.name,
             phoneNumber: widget.phoneNumber);
-        result =
-            await AuthenticationService().signIn(widget.email, widget.password);
-        return Future.value(HomeScreen());
+        if(result == null) {
+          return Future.value(HomeScreen());
+        } else {
+          dispose();
+          Navigator.pop(context, result);
+        }
         break;
       case '/profile':
         User user = await _dbService.getUserDetails();
