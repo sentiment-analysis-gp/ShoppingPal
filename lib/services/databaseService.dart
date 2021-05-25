@@ -52,6 +52,10 @@ class DatabaseService {
     return await loggedInUserDocument.update({'imageURL': imageURL});
   }
 
+  Future<void> removeImageURL() async {
+    return await loggedInUserDocument.update({'imageURL': ""});
+  }
+
   Future<model.User> getUserDetails() async {
     DocumentSnapshot documentSnapshot = await loggedInUserDocument.get();
     model.User user = model.User.fromJson(documentSnapshot.data());
@@ -77,6 +81,14 @@ class DatabaseService {
     TaskSnapshot uploadTask =
         await storage.ref('profilePictures/$fileName').putFile(_imageFile);
     addImageURL(await uploadTask.ref.getDownloadURL());
+    return;
+  }
+
+  Future<void> deleteImageFromFirebase(
+      BuildContext context, String imageUrl) async {
+    String fileName = basename(imageUrl);
+    await storage.refFromURL(imageUrl).delete();
+    removeImageURL();
     return;
   }
 }

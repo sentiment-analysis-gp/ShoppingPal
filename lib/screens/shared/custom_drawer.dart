@@ -72,10 +72,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     SizedBox(
                       width: 10.0,
                     ),
-                    Text(
-                      user?.name ?? '',
-                      style: kMainTextStyle.copyWith(
-                        fontSize: 20,
+                    Expanded(
+                      child: Text(
+                        user?.name ?? '',
+                        style: kMainTextStyle.copyWith(
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ],

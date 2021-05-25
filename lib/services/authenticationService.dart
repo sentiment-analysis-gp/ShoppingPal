@@ -22,7 +22,11 @@ class AuthenticationService {
           uid: authResult.user.uid,
           name: name,
           email: email,
-          phoneNumber: phoneNumber);
+          phoneNumber: phoneNumber,
+          wishList: {},
+          searchHistory:{},
+          imageURL: ""
+      );
       createUser(user);
     } catch (e) {
       return e.message;

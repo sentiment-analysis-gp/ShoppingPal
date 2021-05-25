@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/user.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -36,88 +37,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundColor: kSecondaryColor,
-                radius: size.width * 0.2 + 3.0,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: widget.user.imageURL.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(size.width * 0.5),
-                          child: Image.network(
-                            widget.user.imageURL,
-                            width: size.width * 0.6,
-                            height: size.width * 0.6,
-                            fit: BoxFit.fitHeight,
+              ColumnSuper(
+              innerDistance: -size.width * 0.05,
+              children: [
+                CircleAvatar(
+                  backgroundColor: kSecondaryColor,
+                  radius: size.width * 0.2 + 3.0,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: (widget.user.imageURL?.isNotEmpty ?? false)
+                        ? ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(size.width * 0.5),
+                            child: Image.network(
+                              widget.user.imageURL,
+                              width: size.width * 0.6,
+                              height: size.width * 0.6,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          )
+                        : Icon(
+                            Icons.person_outline,
+                            color: kPrimaryColor,
+                            size: size.width * 0.2,
                           ),
-                        )
-                      : Icon(
-                          Icons.person_outline,
-                          color: kPrimaryColor,
-                          size: size.width * 0.2,
-                        ),
-                  radius: size.width * 0.2,
-                ),
-              ),
-              CircleAvatar(
-                backgroundColor: kPrimaryColor,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.white,
+                    radius: size.width * 0.2,
                   ),
-                  onPressed: () {
-                    _showPicker(context);
-                  },
                 ),
-              ),
+                CircleAvatar(
+                  backgroundColor: kPrimaryColor,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      _showPicker(context);
+                    },
+                  ),
+                ),
+              ]),
               SizedBox(
                 height: 20.0,
               ),
               Text(
-                widget.user.name,
-                style: kSecondaryTextStyle.copyWith(
-                    fontSize: 25, fontWeight: FontWeight.bold),
-              ),
+                  widget.user.name,
+                  style: kSecondaryTextStyle.copyWith(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                ),
               SizedBox(
                 height: 20.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.phone_outlined,
-                    color: kPrimaryColor,
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Text(
-                    widget.user.phoneNumber,
-                    style: kSecondaryTextStyle.copyWith(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              ListTile(
+                leading: Icon(
+                  Icons.phone_outlined,
+                  color: kPrimaryColor,
+                ),
+                title: Text(
+                  widget.user.phoneNumber,
+                  style: kSecondaryTextStyle.copyWith(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.email_outlined,
-                    color: kPrimaryColor,
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Text(
-                    widget.user.email,
-                    style: kSecondaryTextStyle.copyWith(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              ListTile(
+                leading: Icon(
+                  Icons.email_outlined,
+                  color: kPrimaryColor,
+                ),
+                title: Text(
+                  widget.user.email,
+                  style: kSecondaryTextStyle.copyWith(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
               SizedBox(
                 height: 20.0,
@@ -173,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _imgFromGallery();
                         Navigator.of(context).pop();
                       }),
-                  new ListTile(
+                  ListTile(
                     leading: new Icon(
                       Icons.photo_camera,
                       color: kPrimaryColor,
@@ -181,6 +172,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: new Text('Camera'),
                     onTap: () {
                       _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    leading: new Icon(
+                      Icons.delete,
+                      color: kPrimaryColor,
+                    ),
+                    title: new Text('Remove Photo'),
+                    onTap: () async {
+                      DatabaseService service = DatabaseService();
+                      await service.deleteImageFromFirebase(context, widget.user.imageURL);
+                      widget.user = await service.getUserDetails();
+                      setState(() {
+                        widget.user.imageURL;
+                      });
                       Navigator.of(context).pop();
                     },
                   ),
