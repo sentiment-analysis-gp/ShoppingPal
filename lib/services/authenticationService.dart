@@ -23,9 +23,12 @@ class AuthenticationService {
           name: name,
           email: email,
           phoneNumber: phoneNumber,
-          imageURL: null,
-          searchHistory: {},
-          wishList: {});
+
+          wishList: {},
+          searchHistory:{},
+          imageURL: ""
+      );
+
       createUser(user);
       return;
     } catch (e) {
