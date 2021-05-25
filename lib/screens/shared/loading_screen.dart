@@ -52,7 +52,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           return Future.value(HomeScreen());
         } else {
           Navigator.pop(context, result);
-          return null;
+          return SignUpScreen();
         }
         break;
       case '/profile':
