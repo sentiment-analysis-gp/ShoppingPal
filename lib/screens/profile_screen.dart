@@ -37,6 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               ColumnSuper(
               innerDistance: -size.width * 0.05,
               children: [
@@ -60,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Icons.person_outline,
                             color: kPrimaryColor,
                             size: size.width * 0.2,
+
                           ),
                     radius: size.width * 0.2,
                   ),

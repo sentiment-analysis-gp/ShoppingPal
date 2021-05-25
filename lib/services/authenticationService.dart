@@ -23,13 +23,16 @@ class AuthenticationService {
           name: name,
           email: email,
           phoneNumber: phoneNumber,
+
           wishList: {},
           searchHistory:{},
           imageURL: ""
       );
+
       createUser(user);
+      return;
     } catch (e) {
-      return e.message;
+      return e.message.toString();
     }
   }
 
