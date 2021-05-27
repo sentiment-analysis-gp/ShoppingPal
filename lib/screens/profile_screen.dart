@@ -25,6 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    if(widget.user==null)
+      widget.user = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: SearchAppBar(),

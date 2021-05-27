@@ -4,6 +4,7 @@ import 'package:shopping_pal/models/user.dart';
 import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:shopping_pal/services/databaseService.dart';
+import 'package:shopping_pal/services/navigatorStateExtension.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: user?.imageURL != null
+                      child: (user?.imageURL?.isNotEmpty ?? false)
                           ? ClipRRect(
                               borderRadius:
                                   BorderRadius.circular(size.width * 0.5),
@@ -94,9 +95,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/home');
+                if(!Navigator.of(context).isCurrent('/home')){
+                  Navigator.pop(context);
+                  Navigator.popUntil(context, ModalRoute.withName('/home'));
+                }
+                //Navigator.of(context).pushNamedIfNotCurrent('/home');
               },
+              tileColor: (Navigator.of(context).isCurrent('/home'))?Colors.grey[300]:Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.person_outline, color: kPrimaryColor),
@@ -105,17 +110,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () async {
-                Navigator.pop(context);
-                user = await _databaseService.getUserDetails();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(
-                      user: user,
-                    ),
-                  ),
-                );
+                if(!Navigator.of(context).isCurrent('/profile')) {
+                  user = await _databaseService.getUserDetails();
+                  if(!Navigator.of(context).isCurrent('/home')) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    if(Navigator.of(context).isCurrent('/home')){
+                      Navigator.pushNamed(context, '/wishlist');
+                      Navigator.pushNamed(context, '/profile', arguments: user);
+                    }
+                  }else{
+                    Navigator.pushNamed(context, '/profile', arguments: user);
+                  }
+                }
               },
+              tileColor: (Navigator.of(context).isCurrent('/profile'))?Colors.grey[300]:Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.star_outline, color: kPrimaryColor),
@@ -124,9 +133,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/wishlist');
+                if(!Navigator.of(context).isCurrent('/wishlist')) {
+                  if(!Navigator.of(context).isCurrent('/home')) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    if(Navigator.of(context).isCurrent('/home')){
+                      Navigator.pushNamed(context, '/profile', arguments: user);
+                      Navigator.pushNamed(context, '/wishlist');
+                    }
+                  }else{
+                    Navigator.pushNamed(context, '/wishlist', arguments: user);
+                  }
+                }
               },
+              tileColor: (Navigator.of(context).isCurrent('/wishlist'))?Colors.grey[300]:Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.logout, color: kPrimaryColor),
@@ -145,4 +165,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ),
     );
   }
+
+
+  String currentRoute(){
+    print(ModalRoute.of(context).settings.name);
+    return ModalRoute.of(context)?.settings?.name;
+  }
+
 }

@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email;
   String password;
+  String error;
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             kMainTextStyle.copyWith(color: kSecondaryColor)),
                   ),
                 ),
+                (error?.isNotEmpty ?? false)
+                    ? Container(
+                        padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        width: size.width * 0.8,
+                        child: Text(
+                          error,
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
                 Center(
                   child: Container(
                     width: size.width * 0.6,
@@ -110,16 +125,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () {
                         FocusScope.of(context).unfocus();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoadingScreen(
-                              email: email,
-                              password: password,
-                              routeName: '/login',
+                        if(validateInput()){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoadingScreen(
+                                email: email,
+                                password: password,
+                                routeName: '/login',
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                       child: Text(
                         "Login",
@@ -134,5 +151,23 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  bool validateInput() {
+    if (email?.isEmpty ?? true) {
+      error = "Please enter your email";
+      setState(() {
+        error;
+      });
+      return false;
+    }
+    if (password?.isEmpty ?? true) {
+      error = "Please enter your password";
+      setState(() {
+        error;
+      });
+      return false;
+    }
+    return true;
   }
 }

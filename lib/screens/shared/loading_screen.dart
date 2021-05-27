@@ -33,13 +33,14 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   DatabaseService _dbService;
 
-  Future<Widget> setupLoadingScreen() async {
+  Future<void> setupLoadingScreen() async {
     switch (widget.routeName) {
       case '/login':
         Future result =
         await AuthenticationService().signIn(widget.email, widget.password);
         _dbService = DatabaseService();
-        return Future.value(HomeScreen());
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        Navigator.pushNamed(context, '/home');
         break;
       case '/signup':
         var result = await AuthenticationService().signUpWithEmail(
@@ -48,28 +49,41 @@ class _LoadingScreenState extends State<LoadingScreen> {
             name: widget.name,
             phoneNumber: widget.phoneNumber);
         if(result == null || result == "null") {
-          //Navigator.popUntil(context, ModalRoute.withName('/'));
-          return Future.value(HomeScreen());
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+          Navigator.pushNamed(context, '/home');
         } else {
           Navigator.pop(context, result);
-          return SignUpScreen();
         }
         break;
       case '/profile':
         User user = await _dbService.getUserDetails();
-        return Future.value(ProfileScreen(
+        Navigator.pushNamed(context, '/profile', arguments: user);
+        /*return Future.value(ProfileScreen(
           user: user,
-        ));
+        ));*/
         break;
     }
   }
+
+  void initState() {
+    super.initState();
+    setupLoadingScreen();
+  }
+
+  /*Future<String> dummy() async{
+    Future result =
+    await AuthenticationService().signIn(widget.email, widget.password);
+    _dbService = DatabaseService();
+    return '/home';
+  }*/
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: SplashScreen(
-          navigateAfterFuture: setupLoadingScreen(),
+          seconds: 20,
+          //navigateAfterFuture: dummy(),
           backgroundColor: Colors.white,
           image: Image.asset('assets/images/loading_screen.gif'),
           photoSize: size.width * 0.4,
