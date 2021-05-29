@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/user.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:shopping_pal/services/choose_profile_image.dart';
 import 'package:shopping_pal/screens/shared/custom_drawer.dart';
 import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
+import 'package:shopping_pal/screens/view_image_screen.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Size size;
+  DatabaseService _databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +51,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundColor: Colors.white,
                     child: (widget.user.imageURL?.isNotEmpty ?? false)
                         ? ClipRRect(
-                            borderRadius:
+                          borderRadius:
                                 BorderRadius.circular(size.width * 0.5),
+                          child: InkWell(splashColor: Colors.white,
+                            radius: size.width * 0.5,
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute (
+                                builder: (BuildContext context) => ViewImage(user: widget.user,))
+                              ).then((value) async{
+                                widget.user = await _databaseService.getUserDetails();
+                                setState(() {
+                                  widget.user;
+                                });
+                              });
+                            },
                             child: Image.network(
-                              widget.user.imageURL,
-                              width: size.width * 0.6,
-                              height: size.width * 0.6,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          )
+                                widget.user.imageURL,
+                                width: size.width * 0.6,
+                                height: size.width * 0.6,
+                                fit: BoxFit.fitHeight,
+                              ),
+                          ),
+                        )
                         : Icon(
                             Icons.person_outline,
                             color: kPrimaryColor,
@@ -130,25 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _imgFromCamera() async {
-    PickedFile image = await ImagePicker.platform.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 50,
-    );
-    _cropImage(image);
-  }
 
-  _imgFromGallery() async {
-    PickedFile image = await ImagePicker.platform.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 50,
-    );
-    _cropImage(image);
-
-    /*setState(() {
-      _image = File(image.path);
-    });*/
-  }
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -164,9 +160,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: kPrimaryColor,
                       ),
                       title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
+                      onTap: () async {
                         Navigator.of(context).pop();
+                        await SetProfileImage.chooseImageFromGallery();
+                        User user = await _databaseService.getUserDetails();
+                        setState(() {
+                          if(user != null)
+                            widget.user = user;
+                        });
                       }),
                   ListTile(
                     leading: new Icon(
@@ -174,9 +175,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: kPrimaryColor,
                     ),
                     title: new Text('Camera'),
-                    onTap: () {
-                      _imgFromCamera();
+                    onTap: () async {
                       Navigator.of(context).pop();
+                      await SetProfileImage.chooseImageFromCamera();
+                      User user = await _databaseService.getUserDetails();
+                      setState(() {
+                        if(user != null)
+                          widget.user = user;
+                      });
                     },
                   ),
                   ListTile(
@@ -187,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: new Text('Remove Photo'),
                     onTap: () async {
                       DatabaseService service = DatabaseService();
-                      await service.deleteImageFromFirebase(context, widget.user.imageURL);
+                      await service.deleteImageFromFirebase(widget.user.imageURL);
                       widget.user = await service.getUserDetails();
                       setState(() {
                         widget.user.imageURL;
@@ -202,43 +208,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Future<Null> _cropImage(PickedFile pickedImage) async {
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: pickedImage.path,
-        aspectRatioPresets: Platform.isAndroid
-            ? [
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio16x9
-              ]
-            : [
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio5x3,
-                CropAspectRatioPreset.ratio5x4,
-                CropAspectRatioPreset.ratio7x5,
-                CropAspectRatioPreset.ratio16x9
-              ],
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: kPrimaryColor,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
-          title: 'Crop Image',
-        ));
-    if (croppedFile != null) {
-      DatabaseService service = DatabaseService();
-      var o = await service.uploadImageToFirebase(context, croppedFile);
-      widget.user = await service.getUserDetails();
-      setState(() {
-        widget.user.imageURL;
-      });
-    }
-  }
+
 }

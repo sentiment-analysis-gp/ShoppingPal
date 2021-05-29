@@ -73,7 +73,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             //if the user has already clicked the item before begin search process
             //ToDo: Search process
 
-            Product p = await Networking().fetchProductData(searchURL);
+            Product p = await Networking().fetchProductData("https://raw.githubusercontent.com/Ahmad-Montasser/json_placeholder_fake_api/main/db.json"/*searchURL*/);
             p.productURL = searchURL;
             _dbService.addProductToSearchHistory(p);
             Navigator.push(

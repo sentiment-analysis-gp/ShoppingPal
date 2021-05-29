@@ -123,10 +123,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        if(validateInput()){
-                          Navigator.push(
+                        if(validateInput()) {
+                          String result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LoadingScreen(
@@ -136,6 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           );
+                          if(mounted){
+                            setState(() {
+                              error = result;
+                            });
+                          }
                         }
                       },
                       child: Text(

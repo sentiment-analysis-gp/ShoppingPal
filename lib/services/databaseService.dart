@@ -76,7 +76,7 @@ class DatabaseService {
   }
 
   Future<void> uploadImageToFirebase(
-      BuildContext context, File _imageFile) async {
+      /*BuildContext context,*/ File _imageFile) async {
     String fileName = basename(_imageFile.path);
     TaskSnapshot uploadTask =
         await storage.ref('profilePictures/$fileName').putFile(_imageFile);
@@ -85,8 +85,7 @@ class DatabaseService {
   }
 
   Future<void> deleteImageFromFirebase(
-      BuildContext context, String imageUrl) async {
-    String fileName = basename(imageUrl);
+      /*BuildContext context,*/ String imageUrl) async {
     await storage.refFromURL(imageUrl).delete();
     removeImageURL();
     return;

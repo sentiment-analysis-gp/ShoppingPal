@@ -44,7 +44,7 @@ class AuthenticationService {
     }
   }
 
-  signIn(String email, String password) async {
+  Future<String> signIn(String email, String password) async {
     try {
       dynamic data;
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -55,9 +55,9 @@ class AuthenticationService {
           .then((value) => data = value.data());
       model.User user = model.User.fromJson(data);
       print(user.uid);
-      return;
+      return null;
     } catch (e) {
-      print(e);
+      return e.message.toString();
     }
   }
 }

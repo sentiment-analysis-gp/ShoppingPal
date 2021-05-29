@@ -36,11 +36,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> setupLoadingScreen() async {
     switch (widget.routeName) {
       case '/login':
-        Future result =
+        var result =
         await AuthenticationService().signIn(widget.email, widget.password);
-        _dbService = DatabaseService();
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-        Navigator.pushNamed(context, '/home');
+        if(result == null || result == "null") {
+          _dbService = DatabaseService();
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+          Navigator.pushNamed(context, '/home');
+        } else {
+          Navigator.pop(context, result);
+        }
         break;
       case '/signup':
         var result = await AuthenticationService().signUpWithEmail(
