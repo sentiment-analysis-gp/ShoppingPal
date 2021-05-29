@@ -120,6 +120,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Navigator.pushNamed(context, '/profile', arguments: user);
                     }
                   }else{
+                    Navigator.pop(context);
                     Navigator.pushNamed(context, '/profile', arguments: user);
                   }
                 }
@@ -142,6 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Navigator.pushNamed(context, '/wishlist');
                     }
                   }else{
+                    Navigator.pop(context);
                     Navigator.pushNamed(context, '/wishlist', arguments: user);
                   }
                 }

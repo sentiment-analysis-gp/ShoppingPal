@@ -23,7 +23,6 @@ class ProductScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: SearchAppBar(),
-      drawer: CustomDrawer(),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
