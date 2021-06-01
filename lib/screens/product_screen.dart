@@ -38,7 +38,21 @@ class ProductScreen extends StatelessWidget {
                         radius: size.width * 0.2 + 3.0,
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          child: Icon(
+                          child: (product.productImageURL?.isNotEmpty ?? false)
+                            ? ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(size.width * 0.5),
+                          child: InkWell(splashColor: Colors.white,
+                            radius: size.width * 0.5,
+                            child: Image.network(
+                              product.productImageURL,
+                              width: size.width * 0.6,
+                              height: size.width * 0.6,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                        )
+                            : Icon(
                             Icons.shopping_bag_outlined,
                             color: kPrimaryColor,
                             size: size.width * 0.2,

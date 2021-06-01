@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/user.dart';
-import 'package:shopping_pal/screens/home_screen.dart';
-import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:shopping_pal/services/databaseService.dart';

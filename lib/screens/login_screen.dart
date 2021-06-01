@@ -36,121 +36,123 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: size.width * 0.4,
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: 'banner',
-                  child: Container(
-                    child: Image.asset(
-                      "assets/images/logo.png",
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                  ),
+            SingleChildScrollView(
+              physics: (MediaQuery.of(context).viewInsets.bottom == 0)
+                  ? NeverScrollableScrollPhysics()
+                  : null,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width,
+                  minHeight: MediaQuery.of(context).size.height,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  width: size.width * 0.8,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(
-                      fontFamily: "Lato",
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                    onChanged: (value) {
-                      email = value;
-                    },
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.email,
-                        color: kPrimaryColor,
-                      ),
-                      hintText: "Email",
-                      border: InputBorder.none,
-                      hintStyle:
-                          kMainTextStyle.copyWith(color: kSecondaryColor),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  width: size.width * 0.8,
-                  child: TextField(
-                    obscureText: true,
-                    style: TextStyle(
-                      fontFamily: "Lato",
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                    onChanged: (value) {
-                      password = value;
-                    },
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.lock,
-                          color: kPrimaryColor,
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Hero(
+                        tag: 'banner',
+                        child: Container(
+                          child: Image.asset(
+                            "assets/images/logo.png",
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 10),
                         ),
-                        hintText: "Password",
-                        border: InputBorder.none,
-                        hintStyle:
-                            kMainTextStyle.copyWith(color: kSecondaryColor)),
-                  ),
-                ),
-                (error?.isNotEmpty ?? false)
-                    ? Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         width: size.width * 0.8,
-                        child: Text(
-                          error,
+                        child: TextField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
                           style: TextStyle(
-                            color: Colors.red,
+                            fontFamily: "Lato",
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.email,
+                              color: kPrimaryColor,
+                            ),
+                            hintText: "Email",
+                            border: InputBorder.none,
+                            hintStyle:
+                                kMainTextStyle.copyWith(color: kSecondaryColor),
                           ),
                         ),
-                      )
-                    : SizedBox(
-                        height: 0,
                       ),
-                Center(
-                  child: Container(
-                    width: size.width * 0.6,
-                    child: RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                      color: kPrimaryColor,
-                      highlightColor: kSecondaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      onPressed: () async {
-                        FocusScope.of(context).unfocus();
-                        if(validateInput()) {
-                          String result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoadingScreen(
-                                email: email,
-                                password: password,
-                                routeName: '/login',
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        width: size.width * 0.8,
+                        child: TextField(
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (value) {
+                            signIn();
+                          },
+                          obscureText: true,
+                          style: TextStyle(
+                            fontFamily: "Lato",
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.lock,
+                                color: kPrimaryColor,
                               ),
-                            ),
-                          );
-                          if(mounted){
-                            setState(() {
-                              error = result;
-                            });
-                          }
-                        }
-                      },
-                      child: Text(
-                        "Login",
-                        style: kMainTextStyle,
+                              hintText: "Password",
+                              border: InputBorder.none,
+                              hintStyle: kMainTextStyle.copyWith(
+                                  color: kSecondaryColor)),
+                        ),
                       ),
-                    ),
+                      (error?.isNotEmpty ?? false)
+                          ? Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                              width: size.width * 0.8,
+                              child: Text(
+                                error,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 0,
+                            ),
+                      Center(
+                        child: Container(
+                          width: size.width * 0.6,
+                          child: RaisedButton(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 40),
+                            color: kPrimaryColor,
+                            highlightColor: kSecondaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            onPressed: () {
+                              signIn();
+                            },
+                            child: Text(
+                              "Login",
+                              style: kMainTextStyle,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -174,5 +176,26 @@ class _LoginScreenState extends State<LoginScreen> {
       return false;
     }
     return true;
+  }
+
+  Future<void> signIn() async {
+    FocusScope.of(context).unfocus();
+    if (validateInput()) {
+      String result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoadingScreen(
+            email: email,
+            password: password,
+            routeName: '/login',
+          ),
+        ),
+      );
+      if (mounted) {
+        setState(() {
+          error = result;
+        });
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shopping_pal/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
@@ -34,12 +34,12 @@ class ProductCard extends StatelessWidget {
               icon: Icon(Icons.add_shopping_cart_outlined),
               onPressed: () async {
                 await _dbService.addProductToWishList(product);
-                Fluttertoast.showToast(
+                /*Fluttertoast.showToast(
                     msg: "Added to wishlist",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM, // also possible "TOP" and "CENTER"
                     backgroundColor: Colors.grey[700],
-                    textColor: Colors.white);
+                    textColor: Colors.white);*/
               }),
           IconButton(
             icon: Icon(Icons.delete),
