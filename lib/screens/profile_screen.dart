@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/models/user.dart';
@@ -9,6 +7,7 @@ import 'package:shopping_pal/screens/shared/search_appbar.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/screens/view_image_screen.dart';
 import 'package:shopping_pal/services/databaseService.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ProfileScreen extends StatefulWidget {
   User user;
@@ -22,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   Size size;
   DatabaseService _databaseService = DatabaseService();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               ColumnSuper(
               innerDistance: -size.width * 0.05,
               children: [
@@ -49,36 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   radius: size.width * 0.2 + 3.0,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: (widget.user.imageURL?.isNotEmpty ?? false)
-                        ? ClipRRect(
-                          borderRadius:
-                                BorderRadius.circular(size.width * 0.5),
-                          child: InkWell(splashColor: Colors.white,
-                            radius: size.width * 0.5,
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute (
-                                builder: (BuildContext context) => ViewImage(user: widget.user,))
-                              ).then((value) async{
-                                widget.user = await _databaseService.getUserDetails();
-                                setState(() {
-                                  widget.user;
-                                });
-                              });
-                            },
-                            child: Image.network(
-                                widget.user.imageURL,
-                                width: size.width * 0.6,
-                                height: size.width * 0.6,
-                                fit: BoxFit.fitHeight,
-                              ),
-                          ),
-                        )
-                        : Icon(
-                            Icons.person_outline,
-                            color: kPrimaryColor,
-                            size: size.width * 0.2,
-
-                          ),
+                    child: selectCircleAvatarChild(),
                     radius: size.width * 0.2,
                   ),
                 ),
@@ -162,11 +132,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: new Text('Photo Library'),
                       onTap: () async {
                         Navigator.of(context).pop();
+                        setState(() {
+                          isLoading = true;
+                        });
                         await SetProfileImage.chooseImageFromGallery();
                         User user = await _databaseService.getUserDetails();
                         setState(() {
+                          isLoading = false;
                           if(user != null)
                             widget.user = user;
+
                         });
                       }),
                   ListTile(
@@ -178,10 +153,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () async {
                       Navigator.of(context).pop();
                       await SetProfileImage.chooseImageFromCamera();
+                      setState(() {
+                        isLoading = true;
+                      });
                       User user = await _databaseService.getUserDetails();
                       setState(() {
+                        isLoading = false;
                         if(user != null)
                           widget.user = user;
+
                       });
                     },
                   ),
@@ -206,6 +186,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           );
         });
+  }
+
+  Widget selectCircleAvatarChild(){
+    return (isLoading)? SpinKitFadingCircle(
+      color: kPrimaryColor,
+      size: size.height * 0.07,
+    ):
+    (widget.user.imageURL?.isNotEmpty ?? false)
+        ? ClipRRect(
+      borderRadius:
+      BorderRadius.circular(size.width * 0.5),
+      child: InkWell(splashColor: Colors.white,
+        radius: size.width * 0.5,
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute (
+              builder: (BuildContext context) => ViewImage(user: widget.user,))
+          ).then((value) async{
+            widget.user = await _databaseService.getUserDetails();
+            setState(() {
+              widget.user;
+            });
+          });
+        },
+        child: Image.network(
+          widget.user.imageURL,
+          width: size.width * 0.6,
+          height: size.width * 0.6,
+          fit: BoxFit.fitHeight,
+        ),
+      ),
+    )
+        : Icon(
+      Icons.person_outline,
+      color: kPrimaryColor,
+      size: size.width * 0.2,
+
+    );
   }
 
 

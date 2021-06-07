@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/user.dart';
-import 'package:shopping_pal/screens/profile_screen.dart';
 import 'package:shopping_pal/services/authenticationService.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 import 'package:shopping_pal/services/navigatorStateExtension.dart';
@@ -13,19 +13,26 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   final DatabaseService _databaseService = DatabaseService();
+  Size size;
 
   User user;
 
+  bool isLoading = false;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initializeUser();
   }
 
   void initializeUser() async {
+    setState(() {
+      isLoading = true;
+    });
     user = await _databaseService.getUserDetails();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   final TextStyle textStyle = TextStyle(
@@ -36,7 +43,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 0.66,
       child: Theme(
@@ -52,22 +59,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: (user?.imageURL?.isNotEmpty ?? false)
-                          ? ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(size.width * 0.5),
-                              child: Image.network(
-                                user.imageURL,
-                                width: size.width * 0.14,
-                                height: size.width * 0.14,
-                                fit: BoxFit.fitHeight,
-                              ),
-                            )
-                          : Icon(
-                              Icons.person_outline,
-                              color: kPrimaryColor,
-                              size: size.width * 0.07,
-                            ),
+                      child: selectCircleAvatarChild(),
                       radius: size.width * 0.07,
                     ),
                     SizedBox(
@@ -95,13 +87,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () {
-                if(!Navigator.of(context).isCurrent('/home')){
+                if (!Navigator.of(context).isCurrent('/home')) {
                   Navigator.pop(context);
                   Navigator.popUntil(context, ModalRoute.withName('/home'));
                 }
                 //Navigator.of(context).pushNamedIfNotCurrent('/home');
               },
-              tileColor: (Navigator.of(context).isCurrent('/home'))?Colors.grey[300]:Colors.white,
+              tileColor: (Navigator.of(context).isCurrent('/home'))
+                  ? Colors.grey[300]
+                  : Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.person_outline, color: kPrimaryColor),
@@ -110,22 +104,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () async {
-                if(!Navigator.of(context).isCurrent('/profile')) {
+                if (!Navigator.of(context).isCurrent('/profile')) {
                   user = await _databaseService.getUserDetails();
-                  if(!Navigator.of(context).isCurrent('/home')) {
+                  if (!Navigator.of(context).isCurrent('/home')) {
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    if(Navigator.of(context).isCurrent('/home')){
+                    if (Navigator.of(context).isCurrent('/home')) {
                       Navigator.pushNamed(context, '/wishlist');
                       Navigator.pushNamed(context, '/profile', arguments: user);
                     }
-                  }else{
+                  } else {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/profile', arguments: user);
                   }
                 }
               },
-              tileColor: (Navigator.of(context).isCurrent('/profile'))?Colors.grey[300]:Colors.white,
+              tileColor: (Navigator.of(context).isCurrent('/profile'))
+                  ? Colors.grey[300]
+                  : Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.star_outline, color: kPrimaryColor),
@@ -134,21 +130,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: textStyle,
               ),
               onTap: () {
-                if(!Navigator.of(context).isCurrent('/wishlist')) {
-                  if(!Navigator.of(context).isCurrent('/home')) {
+                if (!Navigator.of(context).isCurrent('/wishlist')) {
+                  if (!Navigator.of(context).isCurrent('/home')) {
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    if(Navigator.of(context).isCurrent('/home')){
+                    if (Navigator.of(context).isCurrent('/home')) {
                       Navigator.pushNamed(context, '/profile', arguments: user);
                       Navigator.pushNamed(context, '/wishlist');
                     }
-                  }else{
+                  } else {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/wishlist', arguments: user);
                   }
                 }
               },
-              tileColor: (Navigator.of(context).isCurrent('/wishlist'))?Colors.grey[300]:Colors.white,
+              tileColor: (Navigator.of(context).isCurrent('/wishlist'))
+                  ? Colors.grey[300]
+                  : Colors.white,
             ),
             ListTile(
               leading: Icon(Icons.logout, color: kPrimaryColor),
@@ -168,10 +166,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-
-  String currentRoute(){
+  String currentRoute() {
     print(ModalRoute.of(context).settings.name);
     return ModalRoute.of(context)?.settings?.name;
   }
 
+  Widget selectCircleAvatarChild() {
+    return (isLoading)
+        ? SpinKitFadingCircle(
+            color: kPrimaryColor,
+            size: size.height * 0.07,
+          )
+        : (user?.imageURL?.isNotEmpty ?? false)
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(size.width * 0.5),
+                child: Image.network(
+                  user.imageURL,
+                  width: size.width * 0.14,
+                  height: size.width * 0.14,
+                  fit: BoxFit.fitHeight,
+                ),
+              )
+            : Icon(
+                Icons.person_outline,
+                color: kPrimaryColor,
+                size: size.width * 0.07,
+              );
+  }
 }
