@@ -32,12 +32,12 @@ class Product {
 
   Map<String, dynamic> toJson() => {
         'product_URL': productURL,
-        'product_title': productName,
+        'title': productName,
         'price': productPrice,
-        'product_image': productImageURL,
-        'average_rating': productAmazonRating,
+        'mainImage': productImageURL,
+        'rating': productAmazonRating,
         'model_rating': productModelRating,
-        'number_of_reviews': numberOfReviews,
+        'totalReviews': numberOfReviews,
         'positive_reviews_number': numberOfPosReviews,
         'negative_reviews_number': numberOfNegReviews,
         'neutral_reviews_number': numberOfNeutReviews,
@@ -56,12 +56,12 @@ class Product {
 
     return Product(
       productURL: json['product_URL'],
-      productName: json['product_title'],
-      productPrice: json['price'],
-      productImageURL: json['product_image'],
-      productAmazonRating: json['average_rating'],
+      productName: json['title'],
+      productPrice: json['price'],//ToDo:
+      productImageURL: json['mainImage'],
+      productAmazonRating: json['rating'],
       productModelRating: json['model_rating'],
-      numberOfReviews: json['number_of_reviews'],
+      numberOfReviews: json['totalReviews'],
       numberOfPosReviews: json['positive_reviews_number'],
       numberOfNegReviews: json['negative_reviews_number'],
       numberOfNeutReviews: json['neutral_reviews_number'],

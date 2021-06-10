@@ -8,17 +8,18 @@ class Networking {
   RegExp pathRegexp = RegExp(r'\/{1}.*');
 
   Future<Product> fetchProductData(String productURL) async {
-    RegExpMatch match = domainRegexp.firstMatch(productURL);
+    /*RegExpMatch match = domainRegexp.firstMatch(productURL);
     String domain = match[0].substring(2);
     match = pathRegexp.firstMatch(domain);
     String path = match[0].substring(1);
-    domain = domain.substring(0, match.start);
+    domain = domain.substring(0, match.start);*/
     //for Debugging
     // print('$NETWORKINGID URL ' + productURL);
     // print('$NETWORKINGID path ' + path);
     // print('$NETWORKINGID domain ' + domain);
 
-    var response = await http.get(Uri.https(domain, path));
+    var response = await http.get(Uri.parse("http://3.64.33.37/info"),headers: {"product-url": productURL});
+    print('$NETWORKINGID response ' + response.body);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
