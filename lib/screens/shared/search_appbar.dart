@@ -5,6 +5,8 @@ import 'package:shopping_pal/screens/product_screen.dart';
 import 'package:shopping_pal/services/networking.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 
+import '../../models/product_info.dart';
+
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   _SearchAppBarState createState() => _SearchAppBarState();
@@ -72,15 +74,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
           } else {
             //if the user has already clicked the item before begin search process
             //ToDo: Search process
-
-            Product p = await Networking().fetchProductData("https://www.amazon.com/Madden-NFL-21-Next-Level-PlayStation/dp/B08NMQNSX3/ref=cm_cr_arp_d_product_top?ie=UTF8"/*searchURL*/);
+            ProductInfo p = await Networking().fetchProductData(searchURL);
             p.productURL = searchURL;
-            _dbService.addProductToSearchHistory(p);
+            //_dbService.addProductToSearchHistory(p); //TODO
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ProductScreen(
-                          product: p,
+                          productInfo: p,
                         )));
             print(p);
             setState(() {

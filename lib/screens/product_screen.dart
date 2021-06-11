@@ -2,23 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/models/product_reviews.dart';
 import 'package:shopping_pal/services/databaseService.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'shared/custom_drawer.dart';
+import '../models/product_info.dart';
+import '../services/networking.dart';
 import 'shared/search_appbar.dart';
 
-class ProductScreen extends StatelessWidget {
-  final Product product;
-  final DatabaseService _dbService = DatabaseService();
+class ProductScreen extends StatefulWidget {
+  Product product;
+  ProductInfo productInfo;
+  ProductReviews productReviews;
+  ProductScreen({this.product, this.productInfo, this.productReviews});
 
-  ProductScreen({this.product});
+  @override
+  _ProductScreenState createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  final DatabaseService _dbService = DatabaseService();
+  @override
+  void initState() {
+    super.initState();
+    initProductReviews();
+  }
+
+  double modelRating = 0;
+  Future<void> initProductReviews() async {
+    widget.productReviews = await Networking().getModelData();
+    setState(() {
+      widget.productReviews;
+      modelRating = widget.productReviews.productModelRating;
+      print(modelRating);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Map<String, double> dataMap = {
-      "Positive": product.numberOfPosReviews.toDouble(),
-      "Negative": product.numberOfNegReviews.toDouble(),
-      "Neutral": product.numberOfNeutReviews.toDouble(),
+      "Positive": widget?.productReviews?.numberOfPosReviews?.toDouble() ?? 0,
+      "Negative": widget?.productReviews?.numberOfNegReviews?.toDouble() ?? 0,
+      "Neutral": widget?.productReviews?.numberOfNeutReviews?.toDouble() ?? 0,
     };
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -38,25 +62,28 @@ class ProductScreen extends StatelessWidget {
                         radius: size.width * 0.2 + 3.0,
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          child: (product.productImageURL?.isNotEmpty ?? false)
-                            ? ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(size.width * 0.5),
-                          child: InkWell(splashColor: Colors.white,
-                            radius: size.width * 0.5,
-                            child: Image.network(
-                              product.productImageURL,
-                              width: size.width * 0.6,
-                              height: size.width * 0.6,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        )
-                            : Icon(
-                            Icons.shopping_bag_outlined,
-                            color: kPrimaryColor,
-                            size: size.width * 0.2,
-                          ),
+                          child: (widget.productInfo.productImageURL
+                                      ?.isNotEmpty ??
+                                  false)
+                              ? ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(size.width * 0.5),
+                                  child: InkWell(
+                                    splashColor: Colors.white,
+                                    radius: size.width * 0.5,
+                                    child: Image.network(
+                                      widget.productInfo.productImageURL,
+                                      width: size.width * 0.6,
+                                      height: size.width * 0.6,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.shopping_bag_outlined,
+                                  color: kPrimaryColor,
+                                  size: size.width * 0.2,
+                                ),
                           radius: size.width * 0.2,
                         ),
                       ),
@@ -66,7 +93,7 @@ class ProductScreen extends StatelessWidget {
                         height: 35,
                         child: RawMaterialButton(
                           onPressed: () {
-                            _dbService.addProductToWishList(product);
+                            _dbService.addProductToWishList(widget.product);
                           },
                           elevation: 2.0,
                           fillColor: kPrimaryColor,
@@ -84,7 +111,18 @@ class ProductScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                   child: Text(
-                    product.productName,
+                    widget.productInfo.productName,
+                    textAlign: TextAlign.center,
+                    style: kSecondaryTextStyle.copyWith(color: kPrimaryColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                  child: Text(
+                    'Price : ' +
+                        widget.productInfo.productPrice.toString() +
+                        ' \$',
+                    textAlign: TextAlign.center,
                     style: kSecondaryTextStyle.copyWith(color: kPrimaryColor),
                   ),
                 ),
@@ -100,7 +138,7 @@ class ProductScreen extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(product.productAmazonRating.toString()),
+                    Text(widget.productInfo.productAmazonRating.toString()),
                     SizedBox(
                       width: 10,
                     ),
@@ -110,13 +148,31 @@ class ProductScreen extends StatelessWidget {
                         filledIconData: Icons.star,
                         halfFilledIconData: Icons.star_half,
                         starCount: 5,
-                        rating: product.productAmazonRating,
+                        rating: double.parse(
+                            widget.productInfo.productAmazonRating),
                         size: 40.0,
                         isReadOnly: true,
                         color: kPrimaryColor,
                         borderColor: kSecondaryColor,
                         spacing: 0.0),
                   ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Divider(
+                  color: kSecondaryColor,
+                  thickness: 1.0,
+                  indent: 20.0,
+                  endIndent: 20.0,
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  'Customer Reviews',
+                  style: kSecondaryTextStyle.copyWith(
+                      color: kPrimaryColor, fontSize: 20),
                 ),
                 SizedBox(
                   height: 20,
@@ -133,40 +189,28 @@ class ProductScreen extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(product.productModelRating.toString()),
+                    Text(widget?.productReviews?.productModelRating
+                            ?.toString() ??
+                        '..'),
                     SizedBox(
                       width: 10,
                     ),
-                    SmoothStarRating(
-                        allowHalfRating: false,
-                        defaultIconData: Icons.star_outline,
-                        filledIconData: Icons.star,
-                        halfFilledIconData: Icons.star_half,
-                        starCount: 5,
-                        rating: product.productModelRating.toDouble(),
-                        size: 40.0,
-                        isReadOnly: true,
-                        color: kPrimaryColor,
-                        borderColor: kSecondaryColor,
-                        spacing: 0.0),
+                    widget.productReviews == null
+                        ? Text('') //honda liko was here
+                        : SmoothStarRating(
+                            allowHalfRating: false,
+                            defaultIconData: Icons.star_outline,
+                            filledIconData: Icons.star,
+                            halfFilledIconData: Icons.star_half,
+                            starCount: 5,
+                            rating: widget.productReviews.productModelRating,
+                            size: 40.0,
+                            isReadOnly: true,
+                            color: kPrimaryColor,
+                            borderColor: kSecondaryColor,
+                            spacing: 0.0,
+                          ),
                   ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Divider(
-                  color: kSecondaryColor,
-                  thickness: 1.0,
-                  indent: 20.0,
-                  endIndent: 20.0,
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text(
-                  'Customer Reviews',
-                  style: kSecondaryTextStyle.copyWith(
-                      color: kPrimaryColor, fontSize: 20),
                 ),
                 SizedBox(
                   height: 20,
@@ -192,7 +236,7 @@ class ProductScreen extends StatelessWidget {
                         width: 15.0,
                       ),
                       Text(
-                        product.posSample,
+                        widget?.productReviews?.posSample ?? 'Positive Review',
                         style: kSecondaryTextStyle.copyWith(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -212,7 +256,7 @@ class ProductScreen extends StatelessWidget {
                         width: 15.0,
                       ),
                       Text(
-                        product.neutSample,
+                        widget?.productReviews?.neutSample ?? 'Neutral Review',
                         style: kSecondaryTextStyle.copyWith(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -232,7 +276,7 @@ class ProductScreen extends StatelessWidget {
                         width: 15.0,
                       ),
                       Text(
-                        product.negSample,
+                        widget?.productReviews?.negSample ?? 'Negative Review',
                         style: kSecondaryTextStyle.copyWith(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
