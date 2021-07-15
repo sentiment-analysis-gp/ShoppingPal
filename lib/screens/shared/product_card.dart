@@ -80,7 +80,6 @@ class ProductCard extends StatelessWidget {
                       builder: (context) => ProductScreen(
                             product: product,
                           )));
-              print(product.negSample);
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.04, size.width * 0.02,
@@ -111,40 +110,52 @@ class ProductCard extends StatelessWidget {
                     children: [
                       TableRow(
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage:
-                                ExactAssetImage("assets/images/amazon_logo.png"),
-                                radius: size.width * 0.05,
-                                backgroundColor: Colors.white,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            product.productAmazonRating.toString(),
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: ExactAssetImage(
+                                  "assets/images/amazon_logo.png"),
+                              radius: size.width * 0.05,
+                              backgroundColor: Colors.white,
                             ),
+                          ],
+                        ),
+                        Text(
+                          product.productAmazonRating.toString(),
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            width: size.width * 0.05,
-                          ),
-                          Icon(setSentimentIcon(product.productAmazonRating)),
-                        ]
-                      ),
-                      TableRow(children: [SizedBox(height: 0.0,),SizedBox(height: 0.0,),SizedBox(height: 0.0,),SizedBox(height: 10.0,)]),
-                      TableRow(
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: ExactAssetImage(
-                                    "assets/images/launcher_icon.png"),
-                                radius: size.width * 0.05,
-                                backgroundColor: Colors.white,
-                              ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.05,
+                        ),
+                        Icon(setSentimentIcon(
+                            double.parse(product.productAmazonRating))),
+                      ]),
+                      TableRow(children: [
+                        SizedBox(
+                          height: 0.0,
+                        ),
+                        SizedBox(
+                          height: 0.0,
+                        ),
+                        SizedBox(
+                          height: 0.0,
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        )
+                      ]),
+                      TableRow(children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: ExactAssetImage(
+                                  "assets/images/launcher_icon.png"),
+                              radius: size.width * 0.05,
+                              backgroundColor: Colors.white,
+                            ),
                             ],
                           ),
                           Padding(
@@ -241,7 +252,6 @@ class ProductCard extends StatelessWidget {
 }
 
 IconData setSentimentIcon(double productRating) {
-  print(productRating);
   return (productRating < 1)
       ? Icons.sentiment_dissatisfied_outlined
       : (productRating == 1)

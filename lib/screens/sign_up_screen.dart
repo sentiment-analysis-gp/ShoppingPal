@@ -303,7 +303,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       );
-      print('$result');
       if (mounted) {
         setState(() {
           error = '$result';

@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/models/product_info.dart';
+import 'package:shopping_pal/models/product_reviews.dart';
 import 'package:shopping_pal/models/user.dart' as model;
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -85,9 +87,28 @@ class DatabaseService {
   }
 
   Future<void> deleteImageFromFirebase(
-      /*BuildContext context,*/ String imageUrl) async {
+      /*BuildContext context,*/
+      String imageUrl) async {
     await storage.refFromURL(imageUrl).delete();
     removeImageURL();
     return;
+  }
+
+  static Product productBuilder(
+      ProductInfo productInfo, ProductReviews productReviews) {
+    return Product(
+        productName: productInfo.productName,
+        productPrice: productInfo.productPrice,
+        productAmazonRating: productInfo.productAmazonRating,
+        productImageURL: productInfo.productImageURL,
+        productModelRating: productReviews.productModelRating,
+        numberOfReviews: productReviews.numberOfReviews,
+        negSample: productReviews.negSample,
+        neutSample: productReviews.neutSample,
+        numberOfNegReviews: productReviews.numberOfNegReviews,
+        numberOfNeutReviews: productReviews.numberOfNeutReviews,
+        numberOfPosReviews: productReviews.numberOfPosReviews,
+        posSample: productReviews.posSample,
+        productURL: productInfo.productURL);
   }
 }

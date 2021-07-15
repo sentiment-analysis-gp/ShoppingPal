@@ -21,28 +21,47 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   final DatabaseService _dbService = DatabaseService();
+
   @override
   void initState() {
     super.initState();
-    initProductReviews();
+    if (widget.product == null) initProductReviews();
+    price = widget?.product?.productPrice?.toString() ??
+        widget?.productInfo?.productPrice?.toString() ??
+        'Loading';
+    ourRating = widget?.product?.productModelRating?.toString() ??
+        widget?.productReviews?.productModelRating?.toString() ??
+        '0.0';
   }
 
-  double modelRating = 0;
+  String price;
+
+  String ourRating;
+
   Future<void> initProductReviews() async {
-    widget.productReviews = await Networking().getModelData();
+    widget.productReviews =
+        await Networking().getModelData(widget.productInfo.productURL);
+    _dbService.addProductToSearchHistory(DatabaseService.productBuilder(
+        widget.productInfo, widget.productReviews));
     setState(() {
+      price;
+      ourRating = widget?.product?.productModelRating?.toString() ??
+          widget?.productReviews?.productModelRating?.toString() ??
+          '0.0';
+      print(ourRating);
       widget.productReviews;
-      modelRating = widget.productReviews.productModelRating;
-      print(modelRating);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     Map<String, double> dataMap = {
-      "Positive": widget?.productReviews?.numberOfPosReviews?.toDouble() ?? 0,
-      "Negative": widget?.productReviews?.numberOfNegReviews?.toDouble() ?? 0,
-      "Neutral": widget?.productReviews?.numberOfNeutReviews?.toDouble() ?? 0,
+      "Positive": widget?.product?.numberOfPosReviews?.toDouble() ??
+          widget?.productReviews?.numberOfPosReviews?.toDouble() ??
+          0,
+      "Negative": widget?.product?.numberOfNegReviews?.toDouble() ??
+          widget?.productReviews?.numberOfNegReviews?.toDouble() ??
+          0,
     };
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -62,7 +81,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         radius: size.width * 0.2 + 3.0,
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
-                          child: (widget.productInfo.productImageURL
+                          child: (widget.product?.productImageURL?.isNotEmpty ??
+                                  widget.productInfo.productImageURL
                                       ?.isNotEmpty ??
                                   false)
                               ? ClipRRect(
@@ -72,7 +92,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                     splashColor: Colors.white,
                                     radius: size.width * 0.5,
                                     child: Image.network(
-                                      widget.productInfo.productImageURL,
+                                      widget.product?.productImageURL ??
+                                          widget.productInfo.productImageURL,
                                       width: size.width * 0.6,
                                       height: size.width * 0.6,
                                       fit: BoxFit.fitHeight,
@@ -93,7 +114,15 @@ class _ProductScreenState extends State<ProductScreen> {
                         height: 35,
                         child: RawMaterialButton(
                           onPressed: () {
-                            _dbService.addProductToWishList(widget.product);
+                            widget.product != null
+                                ? _dbService
+                                    .addProductToWishList(widget.product)
+                                : widget.productReviews != null
+                                    ? _dbService.addProductToWishList(
+                                        DatabaseService.productBuilder(
+                                            widget.productInfo,
+                                            widget.productReviews))
+                                    : print('Product Reviews Still Loading');
                           },
                           elevation: 2.0,
                           fillColor: kPrimaryColor,
@@ -111,7 +140,8 @@ class _ProductScreenState extends State<ProductScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                   child: Text(
-                    widget.productInfo.productName,
+                    widget.product?.productName ??
+                        widget.productInfo.productName,
                     textAlign: TextAlign.center,
                     style: kSecondaryTextStyle.copyWith(color: kPrimaryColor),
                   ),
@@ -119,9 +149,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                   child: Text(
-                    'Price : ' +
-                        widget.productInfo.productPrice.toString() +
-                        ' \$',
+                    'Price : ' + price + ' \$',
                     textAlign: TextAlign.center,
                     style: kSecondaryTextStyle.copyWith(color: kPrimaryColor),
                   ),
@@ -138,7 +166,9 @@ class _ProductScreenState extends State<ProductScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(widget.productInfo.productAmazonRating.toString()),
+                    Text(widget?.product?.productAmazonRating?.toString() ??
+                        widget?.productInfo?.productAmazonRating?.toString() ??
+                        '0.0'),
                     SizedBox(
                       width: 10,
                     ),
@@ -149,7 +179,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         halfFilledIconData: Icons.star_half,
                         starCount: 5,
                         rating: double.parse(
-                            widget.productInfo.productAmazonRating),
+                            widget?.product?.productAmazonRating?.toString() ??
+                                widget?.productInfo?.productAmazonRating
+                                    ?.toString() ??
+                                '0.0'),
                         size: 40.0,
                         isReadOnly: true,
                         color: kPrimaryColor,
@@ -189,21 +222,19 @@ class _ProductScreenState extends State<ProductScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(widget?.productReviews?.productModelRating
-                            ?.toString() ??
-                        '..'),
+                    Text(ourRating),
                     SizedBox(
                       width: 10,
                     ),
-                    widget.productReviews == null
-                        ? Text('') //honda liko was here
+                    widget.productReviews == null && widget.product == null
+                        ? Text('')
                         : SmoothStarRating(
                             allowHalfRating: false,
                             defaultIconData: Icons.star_outline,
                             filledIconData: Icons.star,
                             halfFilledIconData: Icons.star_half,
                             starCount: 5,
-                            rating: widget.productReviews.productModelRating,
+                            rating: double.parse(ourRating),
                             size: 40.0,
                             isReadOnly: true,
                             color: kPrimaryColor,
@@ -235,30 +266,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       SizedBox(
                         width: 15.0,
                       ),
-                      Text(
-                        widget?.productReviews?.posSample ?? 'Positive Review',
-                        style: kSecondaryTextStyle.copyWith(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.sentiment_neutral_outlined,
-                        color: kMiddleColor,
-                        size: 60,
-                      ),
-                      SizedBox(
-                        width: 15.0,
-                      ),
-                      Text(
-                        widget?.productReviews?.neutSample ?? 'Neutral Review',
-                        style: kSecondaryTextStyle.copyWith(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          widget.product?.posSample ??
+                              widget?.productReviews?.posSample ??
+                              'Positive Review',
+                          style: kSecondaryTextStyle.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
@@ -275,10 +290,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       SizedBox(
                         width: 15.0,
                       ),
-                      Text(
-                        widget?.productReviews?.negSample ?? 'Negative Review',
-                        style: kSecondaryTextStyle.copyWith(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          widget.product?.negSample ??
+                              widget?.productReviews?.negSample ??
+                              'Negative Review',
+                          style: kSecondaryTextStyle.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),

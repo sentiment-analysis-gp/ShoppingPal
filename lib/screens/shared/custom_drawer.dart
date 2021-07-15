@@ -167,7 +167,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   String currentRoute() {
-    print(ModalRoute.of(context).settings.name);
     return ModalRoute.of(context)?.settings?.name;
   }
 

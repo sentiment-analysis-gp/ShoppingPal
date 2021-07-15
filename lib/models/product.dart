@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class Product {
   String productURL;
   final String productName;
-  final int productPrice;
+  final double productPrice;
   final String productImageURL;
-  final double productAmazonRating;
-  final int productModelRating;
+  final String productAmazonRating;
+  final double productModelRating;
   final int numberOfReviews;
   final int numberOfPosReviews;
   final int numberOfNegReviews;
@@ -47,13 +47,6 @@ class Product {
       };
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    print(json['positive_reviews_number']);
-    print(json['negative_reviews_number']);
-    print(json['neutral_reviews_number']);
-    print(json['positive_review_sample']);
-    print(json['negative_review_sample']);
-    print(json['neutral_review_sample']);
-
     return Product(
       productURL: json['product_URL'],
       productName: json['title'],

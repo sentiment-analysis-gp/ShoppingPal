@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_pal/constants.dart';
 import 'package:shopping_pal/models/product.dart';
+import 'package:shopping_pal/models/product_reviews.dart';
 import 'package:shopping_pal/screens/product_screen.dart';
 import 'package:shopping_pal/services/networking.dart';
 import 'package:shopping_pal/services/databaseService.dart';
@@ -83,7 +84,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     builder: (context) => ProductScreen(
                           productInfo: p,
                         )));
-            print(p);
             setState(() {
               isSearch = false;
             });
